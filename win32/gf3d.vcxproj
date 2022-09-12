@@ -14,18 +14,19 @@
     <ProjectGuid>{F2888FF8-08AA-47C4-B321-B8090877719F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>gf3d</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -58,12 +59,18 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\include;C:\Users\austi\Documents\Github\GameDev3D\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\include;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\include;C:\VulkanSDK\1.3.224.1\Include;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\include;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\include;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\include;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sdl2_ttf.lib;sdl2_mixer.lib;sdl2_image.lib;SDL2.lib;SDL2main.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;vulkan-1.lib;%(AdditionalDependencies);glfw3.lib;SDL2.lib;SDL2main.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\lib\x86;C:\Users\austi\Documents\Github\GameDev3D\gfc\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\libs;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\lib\x86;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\lib\x86;C:\VulkanSDK\1.3.224.1\Lib32;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -74,22 +81,32 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\include;C:\Users\austi\Documents\Github\GameDev3D\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\include;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\include;C:\VulkanSDK\1.3.224.1\Include;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\include;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\include;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\include;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>vulkan-1.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>vulkan-1.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies);glfw3.lib;vulkan-1.lib;SDL2.lib;SDL2main.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\lib\x86;C:\Users\austi\Documents\Github\GameDev3D\gfc\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\libs;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\lib\x86;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\lib\x86;C:\VulkanSDK\1.3.224.1\Lib32;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LinkStatus>true</LinkStatus>
     </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\gfc\include\gfc_audio.h" />
     <ClInclude Include="..\gfc\include\gfc_callbacks.h" />
     <ClInclude Include="..\gfc\include\gfc_color.h" />
+    <ClInclude Include="..\gfc\include\gfc_config.h" />
+    <ClInclude Include="..\gfc\include\gfc_hashmap.h" />
     <ClInclude Include="..\gfc\include\gfc_input.h" />
     <ClInclude Include="..\gfc\include\gfc_list.h" />
     <ClInclude Include="..\gfc\include\gfc_matrix.h" />
+    <ClInclude Include="..\gfc\include\gfc_shape.h" />
     <ClInclude Include="..\gfc\include\gfc_text.h" />
     <ClInclude Include="..\gfc\include\gfc_types.h" />
     <ClInclude Include="..\gfc\include\gfc_vector.h" />
@@ -112,6 +129,7 @@
     <ClInclude Include="..\include\gf3d_validation.h" />
     <ClInclude Include="..\include\gf3d_vgraphics.h" />
     <ClInclude Include="..\include\gf3d_vqueues.h" />
+    <ClInclude Include="..\include\tiny_obj_loader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c" />
@@ -124,26 +142,39 @@
     <ClCompile Include="..\gfc\simple_logger\src\simple_logger.c" />
     <ClCompile Include="..\gfc\src\gfc_audio.c" />
     <ClCompile Include="..\gfc\src\gfc_callbacks.c" />
+    <ClCompile Include="..\gfc\src\gfc_color.c" />
+    <ClCompile Include="..\gfc\src\gfc_config.c" />
+    <ClCompile Include="..\gfc\src\gfc_hashmap.c" />
     <ClCompile Include="..\gfc\src\gfc_input.c" />
     <ClCompile Include="..\gfc\src\gfc_list.c" />
     <ClCompile Include="..\gfc\src\gfc_matrix.c" />
+    <ClCompile Include="..\gfc\src\gfc_shape.c" />
     <ClCompile Include="..\gfc\src\gfc_text.c" />
     <ClCompile Include="..\gfc\src\gfc_types.c" />
     <ClCompile Include="..\gfc\src\gfc_vector.c" />
+    <ClCompile Include="..\src\agumon.c" />
+    <ClCompile Include="..\src\entity.c" />
     <ClCompile Include="..\src\game.c" />
+    <ClCompile Include="..\src\gf3d_buffers.c" />
     <ClCompile Include="..\src\gf3d_camera.c" />
     <ClCompile Include="..\src\gf3d_commands.c" />
+    <ClCompile Include="..\src\gf3d_config.c" />
+    <ClCompile Include="..\src\gf3d_debug.c" />
+    <ClCompile Include="..\src\gf3d_device.c" />
     <ClCompile Include="..\src\gf3d_extensions.c" />
     <ClCompile Include="..\src\gf3d_mesh.c" />
     <ClCompile Include="..\src\gf3d_model.c" />
     <ClCompile Include="..\src\gf3d_obj_load.c" />
     <ClCompile Include="..\src\gf3d_pipeline.c" />
     <ClCompile Include="..\src\gf3d_shaders.c" />
+    <ClCompile Include="..\src\gf3d_sprite.c" />
     <ClCompile Include="..\src\gf3d_swapchain.c" />
     <ClCompile Include="..\src\gf3d_texture.c" />
     <ClCompile Include="..\src\gf3d_validation.c" />
     <ClCompile Include="..\src\gf3d_vgraphics.c" />
     <ClCompile Include="..\src\gf3d_vqueues.c" />
+    <ClCompile Include="..\src\player.c" />
+    <ClCompile Include="..\src\world.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
