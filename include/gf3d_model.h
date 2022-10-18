@@ -30,6 +30,8 @@
 #include "gf3d_texture.h"
 #include "gf3d_mesh.h"
 
+
+
 /**
  * @purpose the model is a single instance of 3d mesh data.  Each can be drawn individually in the rendering pipeline.
  * Multiple models can reference the same mesh and texture data, but will have separate UBO data and descriptorSets
@@ -41,22 +43,51 @@ typedef struct
     Mesh                    *   mesh;
     Texture                 *   texture;
     VkDescriptorSet         *   descriptorSet;
-    VkBuffer                *   uniformBuffers;
+    VkBuffer                *   uniformBuffers;         //for calls to the mesh rendering
     VkDeviceMemory          *   uniformBuffersMemory;
     Uint32                      uniformBufferCount;
+    VkBuffer                *   uniformBuffersHighlight;//for calls to the highlight rendering
+    VkDeviceMemory          *   uniformBuffersMemoryHighlight;
 }Model;
 
 
 void gf3d_model_manager_init(Uint32 max_models,Uint32 chain_length,VkDevice device);
 
-Model * gf3d_model_load(char * filename);
+/**
+ * @brief get a blank model address
+ * @return NULL on full, or a pointer to a blank model
+ */
 Model * gf3d_model_new();
+
+/**
+ * @brief load a model and texture from file where both the model is in models/<filename>.obj and the
+ * texture is in images><filename>,png
+ * @param filename the common filename to load by
+ * @return NULL on error, or the loaded model data otherwise
+ */
+Model * gf3d_model_load(char * filename);
+
+/**
+ * @brief load a model by its model file path and texture file path
+ * @param modelFile where to find the model obj file
+ * @param textureFile where to find the image for the texture
+ * @return NULL on error or the model file otherwise.  
+ */
+Model * gf3d_model_load_full(char * modelFile,char *textureFile);
+
 /**
  * @brief queue up a model for rendering
  * @param model the model to render
  * @param modelMat the model matrix (MVP)
+ * @param colorMod color modulation (values from 0 to 1);
+ * @param highlight highlight color
  */
-void gf3d_model_draw(Model *model,Matrix4 modelMat);
+void gf3d_model_draw(Model *model,Matrix4 modelMat,Vector4D colorMod,Vector4D highlight);
+void gf3d_model_draw_highlight(Model *model,Matrix4 modelMat,Vector4D colorMod,Vector4D highlight);
+
+/**
+ * @brief free a model
+ */
 void gf3d_model_free(Model *model);
 
 /**
@@ -65,8 +96,16 @@ void gf3d_model_free(Model *model);
  * @param descriptSet the descriptorSet to populate
  * @param chainIndex the swap chain frame to do this for
  * @param modelMat the matrix to transform the model by
+ * @param colorMod the color mod to apply to this descriptor
+ * @param highlightColor the color to apply to the highlight color for this descriptor
  */
-void gf3d_model_update_basic_model_descriptor_set(Model *model,VkDescriptorSet descriptorSet,Uint32 chainIndex,Matrix4 modelMat);
+void gf3d_model_update_basic_model_descriptor_set(
+    Model *model,
+    VkDescriptorSet descriptorSet,
+    Uint32 chainIndex,
+    Matrix4 modelMat,
+    Vector4D *colorMod,
+    Vector4D *highlightColor);
 
 
 #endif

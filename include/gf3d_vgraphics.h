@@ -41,6 +41,8 @@ Uint32  gf3d_vgraphics_get_current_buffer_frame();
  */
 VkCommandBuffer gf3d_vgraphics_get_current_command_model_buffer();
 
+VkCommandBuffer gf3d_vgraphics_get_current_command_model_highlight_buffer();
+
 /**
  * @brief get the handle to the active command buffer for the current 2d overlay rendering context
  * @note: THIS SHOULD ONLY BE CALLED BETWEEN CALLS TO gf3d_vgraphics_render_start() and gf3d_vgraphics_render_end()
@@ -79,12 +81,6 @@ Matrix4 *gf3d_vgraphics_get_view_matrix();
 
 VkBuffer gf3d_vgraphics_get_uniform_buffer_by_index(Uint32 index);
 UniformBufferObject gf3d_vgraphics_get_uniform_buffer_object();
-
-/**
- * @brief get the pipeline that is used to render basic 3d models
- * @return NULL on error or the pipeline in question
- */
-Pipeline *gf3d_vgraphics_get_graphics_model_pipeline();
 
 /**
  * @brief get the pipeline that is used to render 2d images to the overlay

@@ -29,6 +29,7 @@ int main(int argc,char *argv[])
     int mousex,mousey;
     float mouseFrame = 0;
     World *w;
+    Entity *agu;
     
     for (a = 1; a < argc;a++)
     {
@@ -38,7 +39,7 @@ int main(int argc,char *argv[])
         }
     }
     
-    init_logger("gf3d.log");    
+    init_logger("gf3d.log",0);    
     gfc_input_init("config/input.cfg");
     slog("gf3d begin");
     gf3d_vgraphics_init("config/setup.cfg");
@@ -48,16 +49,20 @@ int main(int argc,char *argv[])
     
     mouse = gf3d_sprite_load("images/pointer.png",32,32, 16);
     
-    w = world_load("config/testworld.json");
     
+    agu = agumon_new(vector3d(-10 ,0,0));
+    if (agu)agu->selected = 1;
+
     for (a = 0; a < 10;a++)
     {
-        agumon_new(vector3d(a * 10 -50,0,0));
+        agumon_new(vector3d(a * 10 ,0,0));
     }
+    w = world_load("config/testworld.json");
     
+    SDL_SetRelativeMouseMode(SDL_TRUE);
     slog_sync();
     gf3d_camera_set_scale(vector3d(1,1,1));
-    player_new(vector3d(0,0,20));
+    player_new(vector3d(0,-50,0));
     
     // main game loop
     slog("gf3d main loop begin");
@@ -71,6 +76,11 @@ int main(int argc,char *argv[])
         entity_think_all();
         entity_update_all();
         gf3d_camera_update_view();
+        /*gf3d_camera_look_at(
+            vector3d(0,100,100),
+            vector3d(0,0,0),
+            vector3d(0,0,1)
+        );*/
         gf3d_camera_get_view_mat4(gf3d_vgraphics_get_view_matrix());
 
         // configure render command for graphics command pool
