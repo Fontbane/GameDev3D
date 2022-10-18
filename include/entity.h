@@ -5,25 +5,48 @@
 
 #include "gf3d_model.h"
 
+#define STATUS_BURNED       0x01
+#define STATUS_FROZEN       0x02
+#define STATUS_SLUDGE       0x04
+#define STATUS_BROKEN       0x08
+#define ENTTYPE_BUILDING    0x10
+#define ENTTYPE_ENEMY       0x20
+#define ENTTYPE_POINT       0x40
+#define ENTTYPE_LINE        0x80
+
+typedef enum Element {
+    NONE,
+    FIRE,
+    ICE,
+    ELECTRIC,
+    MAX
+}Element;
+
 
 typedef struct Entity_S
 {
     Uint8       _inuse;     /**<keeps track of memory usage*/
     Matrix4     modelMat;   /**<orientation matrix for the model*/
     Model      *model;      /**<pointer to the entity model to draw  (optional)*/
+    Vector3D    minCorner;
+    Vector3D    maxCorner;
     void       (*think)(struct Entity_S *self); /**<pointer to the think function*/
     void       (*update)(struct Entity_S *self); /**<pointer to the update function*/
     void       (*draw)(struct Entity_S *self); /**<pointer to an optional extra draw funciton*/
     void       (*damage)(struct Entity_S *self, float damage, struct Entity_S *inflictor); /**<pointer to the think function*/
     void       (*onDeath)(struct Entity_S *self); /**<pointer to an funciton to call when the entity dies*/
     
-    Vector3D    position;  
+    Vector3D    position;
     Vector3D    velocity;
     Vector3D    acceleration;
     
     
     Vector3D    scale;
     Vector3D    rotation;
+
+    Uint8 info;
+
+    Uint16      ticksSinceStatus;
     
     Uint32      health;     /**<entity dies when it reaches zero*/
     // WHATEVER ELSE WE MIGHT NEED FOR ENTITIES

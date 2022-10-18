@@ -26,7 +26,28 @@ Entity *agumon_new(Vector3D position)
 void agumon_think(Entity *self)
 {
     if (!self)return;
-    self->rotation.x += -0.002;
+    self->rotation.x += gfc_random()/2.0;
+    float r = gfc_random();
+    if (r > 0.5) {
+        self->position.x -= (r - .5) / 2.0;
+    }
+    else {
+        self->position.x += r/2.0;
+    }
+    r = gfc_random();
+    if (r > 0.5) {
+        self->position.y -= (r - .5) / 2.0;
+    }
+    else {
+        self->position.y += r/2.0;
+    }
+    r = gfc_random();
+    if (r > 0.5) {
+        self->position.z -= (r - .5)/2.0;
+    }
+    else {
+        self->position.z += r/2.0;
+    }
 }
 
 /*eol@eof*/

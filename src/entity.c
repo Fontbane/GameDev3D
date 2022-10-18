@@ -51,6 +51,7 @@ Entity *entity_new()
             entity_manager.entity_list[i].scale.x = 1;
             entity_manager.entity_list[i].scale.y = 1;
             entity_manager.entity_list[i].scale.z = 1;
+            entity_manager.entity_list[i].ticksSinceStatus = 0;
             return &entity_manager.entity_list[i];
         }
     }

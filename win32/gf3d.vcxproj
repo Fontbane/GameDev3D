@@ -59,14 +59,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\include;C:\Users\austi\Documents\Github\GameDev3D\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\include;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\include;C:\VulkanSDK\1.3.224.1\Include;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\include;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\include;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\include;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\austi\Documents\Github\vcpkg\packages\assimp_x86-windows\include\assimp;C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\include;C:\Users\austi\Documents\Github\GameDev3D\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\include;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\include;C:\VulkanSDK\1.3.224.1\Include;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\include;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\include;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\include;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;vulkan-1.lib;%(AdditionalDependencies);glfw3.lib;SDL2.lib;SDL2main.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\lib\x86;C:\Users\austi\Documents\Github\GameDev3D\gfc\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\libs;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\lib\x86;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\lib\x86;C:\VulkanSDK\1.3.224.1\Lib32;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;vulkan-1.lib;%(AdditionalDependencies);glfw3.lib;SDL2.lib;SDL2main.lib;assimp-vc142-mt.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\austi\Documents\Github\vcpkg\packages\assimp_x86-windows\lib;C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\lib\x86;C:\Users\austi\Documents\Github\GameDev3D\gfc\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\libs;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\lib\x86;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\lib\x86;C:\VulkanSDK\1.3.224.1\Lib32;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
@@ -81,7 +81,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\include;C:\Users\austi\Documents\Github\GameDev3D\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\include;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\include;C:\VulkanSDK\1.3.224.1\Include;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\include;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\include;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\include;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\austi\Documents\Github\vcpkg\packages\assimp_x86-windows\include\assimp;C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\include;C:\Users\austi\Documents\Github\GameDev3D\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\include;C:\Users\austi\Documents\Github\GameDev3D\gfc\include;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\include;C:\VulkanSDK\1.3.224.1\Include;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\include;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\include;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\include;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -89,8 +89,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>vulkan-1.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies);glfw3.lib;vulkan-1.lib;SDL2.lib;SDL2main.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\lib\x86;C:\Users\austi\Documents\Github\GameDev3D\gfc\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\libs;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\lib\x86;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\lib\x86;C:\VulkanSDK\1.3.224.1\Lib32;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies);glfw3.lib;vulkan-1.lib;SDL2.lib;SDL2main.lib;assimp-vc142-mt.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\austi\Documents\Github\vcpkg\packages\assimp_x86-windows\lib;C:\Users\austi\Documents\SDL2-devel-2.24.0-VC\SDL2-2.24.0\lib\x86;C:\Users\austi\Documents\Github\GameDev3D\gfc\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_json\libs;C:\Users\austi\Documents\Github\GameDev3D\gfc\simple_logger\libs;C:\Users\austi\Documents\SDL2\SDL2_image-2.0.5\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_mixer-2.0.4\lib\x86;C:\Users\austi\Documents\SDL2\SDL2_ttf-2.0.18\lib\x86;C:\Users\austi\Documents\SDL2\SDL2-2.0.20\lib\x86;C:\VulkanSDK\1.3.224.1\Lib32;C:\Users\austi\Documents\glfw-3.3.8.bin.WIN32\glfw-3.3.8.bin.WIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LinkStatus>true</LinkStatus>
     </Link>
     <ProjectReference>
@@ -119,17 +119,32 @@
     <ClInclude Include="..\gfc\simple_json\include\simple_json_string.h" />
     <ClInclude Include="..\gfc\simple_json\include\simple_json_value.h" />
     <ClInclude Include="..\gfc\simple_logger\include\simple_logger.h" />
+    <ClInclude Include="..\include\agumon.h" />
+    <ClInclude Include="..\include\building.h" />
+    <ClInclude Include="..\include\enemy.h" />
+    <ClInclude Include="..\include\entity.h" />
+    <ClInclude Include="..\include\gf3d_buffers.h" />
     <ClInclude Include="..\include\gf3d_camera.h" />
     <ClInclude Include="..\include\gf3d_commands.h" />
+    <ClInclude Include="..\include\gf3d_config.h" />
+    <ClInclude Include="..\include\gf3d_debug.h" />
+    <ClInclude Include="..\include\gf3d_device.h" />
     <ClInclude Include="..\include\gf3d_extensions.h" />
+    <ClInclude Include="..\include\gf3d_mesh.h" />
     <ClInclude Include="..\include\gf3d_model.h" />
+    <ClInclude Include="..\include\gf3d_obj_load.h" />
     <ClInclude Include="..\include\gf3d_pipeline.h" />
     <ClInclude Include="..\include\gf3d_shaders.h" />
+    <ClInclude Include="..\include\gf3d_sprite.h" />
     <ClInclude Include="..\include\gf3d_swapchain.h" />
+    <ClInclude Include="..\include\gf3d_texture.h" />
     <ClInclude Include="..\include\gf3d_validation.h" />
     <ClInclude Include="..\include\gf3d_vgraphics.h" />
     <ClInclude Include="..\include\gf3d_vqueues.h" />
-    <ClInclude Include="..\include\tiny_obj_loader.h" />
+    <ClInclude Include="..\include\player.h" />
+    <ClInclude Include="..\include\projectile.h" />
+    <ClInclude Include="..\include\save.h" />
+    <ClInclude Include="..\include\world.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c" />
@@ -153,6 +168,14 @@
     <ClCompile Include="..\gfc\src\gfc_types.c" />
     <ClCompile Include="..\gfc\src\gfc_vector.c" />
     <ClCompile Include="..\src\agumon.c" />
+    <ClCompile Include="..\src\building.c" />
+    <ClCompile Include="..\src\b_cannon.c" />
+    <ClCompile Include="..\src\b_infernotower.c" />
+    <ClCompile Include="..\src\b_mortar.c" />
+    <ClCompile Include="..\src\b_rocket.c" />
+    <ClCompile Include="..\src\b_wall.c" />
+    <ClCompile Include="..\src\b_wizardtower.c" />
+    <ClCompile Include="..\src\enemy.c" />
     <ClCompile Include="..\src\entity.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gf3d_buffers.c" />
@@ -173,6 +196,13 @@
     <ClCompile Include="..\src\gf3d_validation.c" />
     <ClCompile Include="..\src\gf3d_vgraphics.c" />
     <ClCompile Include="..\src\gf3d_vqueues.c" />
+    <ClCompile Include="..\src\n_archer.c" />
+    <ClCompile Include="..\src\n_bat.c" />
+    <ClCompile Include="..\src\n_buster.c" />
+    <ClCompile Include="..\src\n_dragon.c" />
+    <ClCompile Include="..\src\n_golem.c" />
+    <ClCompile Include="..\src\n_shambler.c" />
+    <ClCompile Include="..\src\n_snowgolem.c" />
     <ClCompile Include="..\src\player.c" />
     <ClCompile Include="..\src\world.c" />
   </ItemGroup>

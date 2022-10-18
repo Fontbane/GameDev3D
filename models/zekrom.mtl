@@ -1,0 +1,101 @@
+# Blender MTL File: 'None'
+# Material Count: 9
+
+newmtl mu_blue2_1
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\austi\\Downloads\\DS DSi - Pokemon Black 2 White 2 - Zekrom\\mu_blue2.png
+
+newmtl mu_body_1
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\austi\\Downloads\\DS DSi - Pokemon Black 2 White 2 - Zekrom\\mu_body.png
+
+newmtl mu_eye_1
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\austi\\Downloads\\DS DSi - Pokemon Black 2 White 2 - Zekrom\\mu_eye_4.png
+
+newmtl mu_head_1
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\austi\\Downloads\\DS DSi - Pokemon Black 2 White 2 - Zekrom\\mu_head.png
+
+newmtl mu_tail_blue_1
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\austi\\Downloads\\DS DSi - Pokemon Black 2 White 2 - Zekrom\\mu_tail_blue.png
+
+newmtl mu_tail_gen_1
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\austi\\Downloads\\DS DSi - Pokemon Black 2 White 2 - Zekrom\\mu_tail_gen.png
+
+newmtl mu_tail_white_1
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\austi\\Downloads\\DS DSi - Pokemon Black 2 White 2 - Zekrom\\mu_tail_white.png
+
+newmtl mu_teeth_1
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\austi\\Downloads\\DS DSi - Pokemon Black 2 White 2 - Zekrom\\mu_teeth.png
+
+newmtl mu_tongue_1
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\austi\\Downloads\\DS DSi - Pokemon Black 2 White 2 - Zekrom\\mu_tongue.png
