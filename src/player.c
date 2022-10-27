@@ -19,11 +19,12 @@ Entity *player_new(Vector3D position)
         return NULL;
     }
     
-    ent->model = gf3d_model_load("dino");
+    ent->model = gf3d_model_load("models/dino.model");
     ent->think = player_think;
     ent->update = player_update;
     vector3d_copy(ent->position,position);
-    ent->rotation.x = -M_PI;
+    ent->rotation.x = -GFC_PI;
+    ent->rotation.z = -GFC_HALF_PI;
     ent->hidden = 1;
     return ent;
 }
@@ -71,8 +72,8 @@ void player_think(Entity *self)
     if (keys[SDL_SCANCODE_RIGHT])self->rotation.z -= 0.0050;
     if (keys[SDL_SCANCODE_LEFT])self->rotation.z += 0.0050;
     
-    if (mouse.x != 0)self->rotation.z += (mouse.x * 0.001);
-    if (mouse.y != 0)self->rotation.x -= (mouse.y * 0.001);
+    if (mouse.x != 0)self->rotation.z -= (mouse.x * 0.001);
+    if (mouse.y != 0)self->rotation.x += (mouse.y * 0.001);
 
     if (keys[SDL_SCANCODE_F3])
     {

@@ -16,8 +16,27 @@ typedef struct
     Matrix4 view;
     Matrix4 proj;
     Vector4D color; //color mod
-    Vector4D highlight;//color mod
+    Vector4D ambient;
 }MeshUBO;
+
+/**
+ * @purpose to send to calls to draw via the highlight pipeline
+ */
+typedef struct
+{
+    Matrix4 model;
+    Matrix4 view;
+    Matrix4 proj;
+    Vector4D color; 
+}HighlightUBO;
+
+typedef struct
+{
+    Matrix4 model;
+    Matrix4 view;
+    Matrix4 proj;
+    Vector4D color; 
+}SkyUBO;
 
 typedef struct
 {
@@ -56,7 +75,7 @@ void gf3d_mesh_init(Uint32 mesh_max);
  * @param filename the name of the file to load
  * @return NULL on error or Mesh data
  */
-Mesh *gf3d_mesh_load(char *filename);
+Mesh *gf3d_mesh_load(const char *filename);
 
 /**
  * @brief get the input attribute descriptions for mesh based rendering
@@ -76,6 +95,23 @@ VkVertexInputBindingDescription * gf3d_mesh_get_bind_description();
  */
 void gf3d_mesh_free(Mesh *mesh);
 
+/**
+ * @brief needs to be called once at the beginning of each render frame
+ */
+void gf3d_mesh_reset_pipes();
+
+/**
+ * @brief called to submit all draw commands to the mesh pipelines
+ */
+void gf3d_mesh_submit_pipe_commands();
+
+/**
+ * @brief get the current command buffer for the mesh system
+ */
+VkCommandBuffer gf3d_mesh_get_model_command_buffer();
+VkCommandBuffer gf3d_mesh_get_highlight_command_buffer();
+VkCommandBuffer gf3d_mesh_get_sky_command_buffer();
+
 
 /**
  * @brief adds a mesh to the render pass
@@ -93,6 +129,7 @@ void gf3d_mesh_render(Mesh *mesh,VkCommandBuffer commandBuffer, VkDescriptorSet 
  */
 void gf3d_mesh_render(Mesh *mesh,VkCommandBuffer commandBuffer, VkDescriptorSet * descriptorSet);
 void gf3d_mesh_render_highlight(Mesh *mesh,VkCommandBuffer commandBuffer, VkDescriptorSet * descriptorSet);
+void gf3d_mesh_render_sky(Mesh *mesh,VkCommandBuffer commandBuffer, VkDescriptorSet * descriptorSet);
 
 /**
  * @brief create a mesh's internal buffers based on vertices
@@ -110,5 +147,6 @@ void gf3d_mesh_create_vertex_buffer_from_vertices(Mesh *mesh,Vertex *vertices,Ui
  */
 Pipeline *gf3d_mesh_get_pipeline();
 Pipeline *gf3d_mesh_get_highlight_pipeline();
+Pipeline *gf3d_mesh_get_sky_pipeline();
 
 #endif

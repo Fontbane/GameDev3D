@@ -3,6 +3,7 @@
 
 #include "gfc_types.h"
 #include "gfc_color.h"
+#include "gfc_primitives.h"
 
 #include "gf3d_model.h"
 
@@ -40,6 +41,10 @@ typedef struct Entity_S
     Uint8       hidden;     /**<if true, not drawn*/
     Uint8       selected;
     Color       selectedColor;      /**<Color for highlighting*/
+    
+    Box         bounds; // for collisions
+    int         team;  //same team dont clip
+    int         clips;  // if false, skip collisions
 
     Vector3D    minCorner;
     Vector3D    maxCorner;

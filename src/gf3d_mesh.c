@@ -18,6 +18,7 @@ typedef struct
     Mesh *mesh_list;
     Pipeline *pipe;
     Pipeline *highlight_pipe;
+    Pipeline *sky_pipe;
     Uint32 mesh_max;
     VkVertexInputAttributeDescription attributeDescriptions[ATTRIBUTE_COUNT];
     VkVertexInputBindingDescription bindingDescription;
@@ -28,7 +29,7 @@ static MeshSystem gf3d_mesh = {0};
 
 void gf3d_mesh_close();
 void gf3d_mesh_delete(Mesh *mesh);
-Mesh *gf3d_mesh_get_by_filename(char *filename);
+Mesh *gf3d_mesh_get_by_filename(const char *filename);
 
 void gf3d_mesh_init(Uint32 mesh_max)
 {
@@ -70,16 +71,31 @@ void gf3d_mesh_init(Uint32 mesh_max)
         mesh_max,
         gf3d_mesh_get_bind_description(),
         gf3d_mesh_get_attribute_descriptions(NULL),
-        count);
+        count,
+        sizeof(MeshUBO)
+    );
 
-    gf3d_mesh.highlight_pipe = gf3d_pipeline_create_from_config(
+    gf3d_mesh.sky_pipe = gf3d_pipeline_create_from_config(
+        gf3d_vgraphics_get_default_logical_device(),
+        "config/sky_pipeline.cfg",
+        gf3d_vgraphics_get_view_extent(),
+        mesh_max,
+        gf3d_mesh_get_bind_description(),
+        gf3d_mesh_get_attribute_descriptions(NULL),
+        count,
+        sizeof(SkyUBO)
+    );
+
+        gf3d_mesh.highlight_pipe = gf3d_pipeline_create_from_config(
         gf3d_vgraphics_get_default_logical_device(),
         "config/highlight_pipeline.cfg",
         gf3d_vgraphics_get_view_extent(),
         mesh_max,
         gf3d_mesh_get_bind_description(),
         gf3d_mesh_get_attribute_descriptions(NULL),
-        count);
+        count,
+        sizeof(HighlightUBO)
+    );
 
     slog("mesh system initialized");
 }
@@ -92,6 +108,45 @@ Pipeline *gf3d_mesh_get_pipeline()
 Pipeline *gf3d_mesh_get_highlight_pipeline()
 {
     return gf3d_mesh.highlight_pipe;
+}
+
+Pipeline *gf3d_mesh_get_sky_pipeline()
+{
+    return gf3d_mesh.sky_pipe;
+}
+
+void gf3d_mesh_reset_pipes()
+{
+    Uint32 bufferFrame = gf3d_vgraphics_get_current_buffer_frame();
+    
+    gf3d_pipeline_reset_frame(gf3d_mesh.sky_pipe,bufferFrame);
+    gf3d_pipeline_reset_frame(gf3d_mesh.pipe,bufferFrame);
+    gf3d_pipeline_reset_frame(gf3d_mesh.highlight_pipe,bufferFrame);
+}
+
+void gf3d_mesh_submit_pipe_commands()
+{
+    gf3d_pipeline_submit_commands(gf3d_mesh.sky_pipe);
+    gf3d_pipeline_submit_commands(gf3d_mesh.pipe);
+    gf3d_pipeline_submit_commands(gf3d_mesh.highlight_pipe);
+}
+
+VkCommandBuffer gf3d_mesh_get_model_command_buffer()
+{
+    if (!gf3d_mesh.pipe)return VK_NULL_HANDLE;
+    return gf3d_mesh.pipe->commandBuffer;
+}
+
+VkCommandBuffer gf3d_mesh_get_highlight_command_buffer()
+{
+    if (!gf3d_mesh.pipe)return VK_NULL_HANDLE;
+    return gf3d_mesh.highlight_pipe->commandBuffer;
+}
+
+VkCommandBuffer gf3d_mesh_get_sky_command_buffer()
+{
+    if (!gf3d_mesh.pipe)return VK_NULL_HANDLE;
+    return gf3d_mesh.sky_pipe->commandBuffer;
 }
 
 
@@ -131,7 +186,7 @@ Mesh *gf3d_mesh_new()
     return NULL;
 }
 
-Mesh *gf3d_mesh_get_by_filename(char *filename)
+Mesh *gf3d_mesh_get_by_filename(const char *filename)
 {
     int i;
     for (i = 0; i < gf3d_mesh.mesh_max; i++)
@@ -179,22 +234,18 @@ void gf3d_mesh_delete(Mesh *mesh)
     if (mesh->faceBuffer != VK_NULL_HANDLE)
     {
         vkDestroyBuffer(gf3d_vgraphics_get_default_logical_device(), mesh->faceBuffer, NULL);
-        slog("mesh %s face buffer freed",mesh->filename);
     }
     if (mesh->faceBufferMemory != VK_NULL_HANDLE)
     {
         vkFreeMemory(gf3d_vgraphics_get_default_logical_device(), mesh->faceBufferMemory, NULL);
-        slog("mesh %s face buffer memory freed",mesh->filename);
     }
     if (mesh->buffer != VK_NULL_HANDLE)
     {
         vkDestroyBuffer(gf3d_vgraphics_get_default_logical_device(), mesh->buffer, NULL);
-        slog("mesh %s vert buffer freed",mesh->filename);
     }
     if (mesh->bufferMemory != VK_NULL_HANDLE)
     {
         vkFreeMemory(gf3d_vgraphics_get_default_logical_device(), mesh->bufferMemory, NULL);
-        slog("mesh %s vert buffer memory freed",mesh->filename);
     }
     memset(mesh,0,sizeof(Mesh));
 }
@@ -233,6 +284,25 @@ void gf3d_mesh_render_highlight(Mesh *mesh,VkCommandBuffer commandBuffer, VkDesc
         return;
     }
     pipe = gf3d_mesh.highlight_pipe;
+    vkCmdBindVertexBuffers(commandBuffer, 0, 1, &mesh->buffer, offsets);
+    
+    vkCmdBindIndexBuffer(commandBuffer, mesh->faceBuffer, 0, VK_INDEX_TYPE_UINT32);
+    
+    vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipe->pipelineLayout, 0, 1, descriptorSet, 0, NULL);
+    
+    vkCmdDrawIndexed(commandBuffer, mesh->faceCount * 3, 1, 0, 0, 0);
+}
+
+void gf3d_mesh_render_sky(Mesh *mesh,VkCommandBuffer commandBuffer, VkDescriptorSet * descriptorSet)
+{
+    VkDeviceSize offsets[] = {0};
+    Pipeline *pipe;
+    if (!mesh)
+    {
+        slog("cannot render a NULL mesh");
+        return;
+    }
+    pipe = gf3d_mesh.sky_pipe;
     vkCmdBindVertexBuffers(commandBuffer, 0, 1, &mesh->buffer, offsets);
     
     vkCmdBindIndexBuffer(commandBuffer, mesh->faceBuffer, 0, VK_INDEX_TYPE_UINT32);
@@ -299,7 +369,7 @@ void gf3d_mesh_create_vertex_buffer_from_vertices(Mesh *mesh,Vertex *vertices,Ui
     slog("created a mesh with %i vertices and %i face",vcount,fcount);
 }
 
-Mesh *gf3d_mesh_load(char *filename)
+Mesh *gf3d_mesh_load(const char *filename)
 {
     Mesh *mesh;
     ObjData *obj;

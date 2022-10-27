@@ -8,8 +8,6 @@
 #include "gf3d_swapchain.h"
 #include "gf3d_vgraphics.h"
 #include "gf3d_shaders.h"
-#include "gf3d_model.h"
-#include "gf3d_sprite.h"
 #include "gf3d_pipeline.h"
 
 extern int __DEBUG;
@@ -217,13 +215,15 @@ Pipeline *gf3d_pipeline_create_from_config(
     Uint32 descriptorCount,
     const VkVertexInputBindingDescription* vertexInputDescription,
     const VkVertexInputAttributeDescription * vertextInputAttributeDescriptions,
-    Uint32 vertexAttributeCount)
+    Uint32 vertexAttributeCount,
+    VkDeviceSize bufferSize)
 {
     SJson *config,*file, *item;
     const char *str;
     Pipeline *pipe;
     const char *vertFile = NULL;
     const char *fragFile = NULL;
+    Uint32 draw_calls = 1024;
     VkRect2D scissor = {0};
     VkViewport viewport = {0};
     VkGraphicsPipelineCreateInfo pipelineInfo = {0};
@@ -417,6 +417,9 @@ Pipeline *gf3d_pipeline_create_from_config(
         gf3d_pipeline_free(pipe);
         return NULL;
     }
+    
+    pipe->uboList = gf3d_uniform_buffer_list_new(device,bufferSize,draw_calls,gf3d_swapchain_get_swap_image_count());
+    
     if (__DEBUG)slog("pipeline created from file '%s'",configFile);
     return pipe;
 }
@@ -426,6 +429,11 @@ void gf3d_pipeline_free(Pipeline *pipe)
     int i;
     if (!pipe)return;
     if (!pipe->inUse)return;
+    if (pipe->uboList)
+    {
+        gf3d_uniform_buffer_list_free(pipe->uboList);
+    }
+
     if (pipe->descriptorCursor)
     {
         free(pipe->descriptorCursor);
@@ -437,7 +445,6 @@ void gf3d_pipeline_free(Pipeline *pipe)
         {
             if (pipe->descriptorPool[i] != VK_NULL_HANDLE)
             {
-                slog("cleaning up pipeline descriptor pool");
                 vkDestroyDescriptorPool(pipe->device, pipe->descriptorPool[i], NULL);
             }
         }
@@ -491,7 +498,6 @@ void gf3d_pipeline_create_basic_model_descriptor_pool(Pipeline *pipe)
         slog("no pipeline provided");
         return;
     }
-    slog("attempting to make %i descriptor pools of size %i",gf3d_pipeline.chainLength,pipe->descriptorSetCount);
     poolSize[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
     poolSize[0].descriptorCount = pipe->descriptorSetCount;
     poolSize[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
@@ -517,12 +523,20 @@ void gf3d_pipeline_create_basic_model_descriptor_pool(Pipeline *pipe)
 void gf3d_pipeline_reset_frame(Pipeline *pipe,Uint32 frame)
 {
     if (!pipe)return;
+    gf3d_uniform_buffer_list_clear(pipe->uboList,frame);
     if (frame >= gf3d_pipeline.chainLength)
     {
         slog("frame %i outside the range of supported descriptor Pools (%i)",frame,gf3d_pipeline.chainLength);
         return;
     }
     pipe->descriptorCursor[frame] = 0;
+    pipe->commandBuffer = gf3d_command_rendering_begin(frame,pipe);
+}
+
+void gf3d_pipeline_submit_commands(Pipeline *pipe)
+{
+    if (!pipe)return;
+    gf3d_command_rendering_end(pipe->commandBuffer);
 }
 
 void gf3d_pipeline_create_descriptor_sets(Pipeline *pipe)
