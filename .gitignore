@@ -41,6 +41,8 @@
 *.su
 *.idb
 *.pdb
+*.foz
+*.gfxr
 
 # Kernel Module Compile Results
 *.mod*
