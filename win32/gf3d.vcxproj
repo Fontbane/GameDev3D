@@ -141,6 +141,13 @@
     <ClInclude Include="..\include\gf3d_validation.h" />
     <ClInclude Include="..\include\gf3d_vgraphics.h" />
     <ClInclude Include="..\include\gf3d_vqueues.h" />
+    <ClInclude Include="..\include\m_archer.h" />
+    <ClInclude Include="..\include\m_bat.h" />
+    <ClInclude Include="..\include\m_buster.h" />
+    <ClInclude Include="..\include\m_dragon.h" />
+    <ClInclude Include="..\include\m_golem.h" />
+    <ClInclude Include="..\include\m_shambler.h" />
+    <ClInclude Include="..\include\m_snowgolem.h" />
     <ClInclude Include="..\include\player.h" />
     <ClInclude Include="..\include\projectile.h" />
     <ClInclude Include="..\include\save.h" />

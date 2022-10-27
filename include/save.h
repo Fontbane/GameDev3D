@@ -23,6 +23,8 @@ typedef struct PlayerData {
 	Uint32 gold;
 	Uint32 elixir;
 	Uint8 day;
+	Uint8 totalMines;
+	Uint8 totalLines;
 	Uint8 totalBuildings;
 	Uint8 totalWalls;
 	Uint8 totalCannons;

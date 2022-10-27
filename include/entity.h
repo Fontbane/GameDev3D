@@ -6,14 +6,6 @@
 
 #include "gf3d_model.h"
 
-typedef enum
-{
-    ES_idle = 0,
-    ES_hunt,
-    ES_dead,
-    ES_attack
-}EntityState;
-
 #define STATUS_BURNED       0x01
 #define STATUS_FROZEN       0x02
 #define STATUS_SLUDGE       0x04
@@ -23,6 +15,14 @@ typedef enum
 #define ENTTYPE_POINT       0x40
 #define ENTTYPE_LINE        0x80
 
+typedef enum
+{
+    ES_idle = 0,
+    ES_hunt,
+    ES_dead,
+    ES_attack
+}EntityState;
+
 typedef enum Element {
     NONE,
     FIRE,
@@ -30,7 +30,6 @@ typedef enum Element {
     ELECTRIC,
     MAX
 }Element;
-
 
 typedef struct Entity_S
 {
@@ -59,9 +58,10 @@ typedef struct Entity_S
     Vector3D    scale;
     Vector3D    rotation;
 
-    Uint8 info;
+    Uint8       info;
 
-    Uint16      ticksSinceStatus;
+    Uint32      ticksSinceStatus;
+    Uint32      fireTimer;
     
     Uint32      health;     /**<entity dies when it reaches zero*/
     // WHATEVER ELSE WE MIGHT NEED FOR ENTITIES
@@ -115,5 +115,7 @@ void entity_think_all();
  * @brief run the update functions for ALL active entities
  */
 void entity_update_all();
+
+Vector3D vector3d_move_toward(Vector3D current, Vector3D target, float rate);
 
 #endif

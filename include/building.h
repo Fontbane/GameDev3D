@@ -12,6 +12,30 @@
 #define BF_WALL		0x40
 #define BF_HALL		0x80
 
+#define NORMAL_CANNON	0
+#define GIANT_CANNON	1
+#define DOUBLE_CANNON	2
+
+#define NORMAL_ROCKET	0
+#define MULTI_ROCKET	1
+#define STICKY_ROCKET	2
+
+#define NORMAL_MORTAR	0
+#define MULTI_MORTAR	1
+#define MORTAR_BLOWUP	2
+
+#define NORMAL_WIZARD_TOWER	0
+#define IVORY_TOWER			1
+#define DARK_TOWER			2
+
+#define NORMAL_INFERNO		0
+#define MELTDOWN_INFERNO	1
+#define HEATSOAK_INFERNO	2
+
+#define	NORMAL_WALL			0
+#define	ELECTRO_WALL		1
+#define	SLUDGE_WALL			2
+
 typedef enum Building {
 	NONE,
 	WALL,
@@ -30,6 +54,7 @@ typedef enum Building {
 
 typedef struct BuildingData {
 	Building id;
+	BuildingInfo* info;
 	SDL_Point villagepos;
 	Uint16 health;
 	Uint8 level;
@@ -41,7 +66,7 @@ typedef struct BuildingInfo {
 	float range;
 	float vulnerability;
 	float damage;//per hit
-	float timetohit;
+	Uint16 tickstofire;
 	Uint16 maxHealth;
 	Uint16 cost;
 	Uint8 targets;
@@ -51,12 +76,12 @@ typedef struct BuildingInfo {
 
 void building_entify(Entity* self, BuildingInfo info);
 
-int B_fire(Entity* building, Entity* projectile, Entity* target);
+void B_think(Entity* self);
 
-int B_melee(Entity* building, Entity* target);
+int B_fire(Entity* building, Entity* target);
 
 void B_die(Entity* building, Entity* causeOfDeath);
 
-void B_find_nearest(Entity* building);
+extern Entity* B_find_nearest(Entity* building);
 
 #endif /*__BUILDING_H__*/

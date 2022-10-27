@@ -20,4 +20,6 @@ typedef struct Projectile_S {
 	Uint8 flags;
 }Projectile;
 
+void P_think(Entity* self);
+
 #endif // !__PROJECTILE_H__
