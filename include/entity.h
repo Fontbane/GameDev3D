@@ -121,6 +121,10 @@ void entity_think_all();
  */
 void entity_update_all();
 
+Entity* building_new();
+
 Vector3D vector3d_move_toward(Vector3D current, Vector3D target, float rate);
+
+void sphere_damage(Sphere sphere, Uint16 baseDamage);
 
 #endif

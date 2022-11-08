@@ -23,20 +23,12 @@ typedef struct PlayerData {
 	Uint32 gold;
 	Uint32 elixir;
 	Uint8 day;
-	Uint8 totalMines;
-	Uint8 totalLines;
-	Uint8 totalBuildings;
-	Uint8 totalWalls;
-	Uint8 totalCannons;
-	Uint8 totalRockets;
-	Uint8 totalMortars;
-	Uint8 totalWizardTowers;
-	Uint8 totalInfernoTowers;
+	Uint8 totalBuildings[BUILDINGS_MAX];
 	Uint8 hallLevel;
 	Uint16 upgradeflags;
 	List* buildings;
 } PlayerData;
 
-
+PlayerData* saveData;
 
 #endif /*__SAVE_H__*/

@@ -9,6 +9,7 @@
 #include "gfc_text.h"
 #include "gfc_matrix.h"
 #include "gf3d_pipeline.h"
+#include "gfc_primitives.h"
 
 typedef struct
 {
@@ -61,6 +62,7 @@ typedef struct
     Uint32          faceCount;
     VkBuffer        faceBuffer;
     VkDeviceMemory  faceBufferMemory;
+    Box bounds;
 }Mesh;
 
 /**

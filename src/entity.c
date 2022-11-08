@@ -6,6 +6,7 @@
 #include "entity.h"
 #include "building.h"
 #include "enemy.h"
+#include "spells.h"
 
 typedef struct
 {
@@ -192,10 +193,11 @@ void entity_update_all()
 }
 
 Entity* B_find_nearest(Entity* building) {
-    BuildingData* data = building->customData;
-    BuildingInfo* info = data->info;
+    BuildingInfo* info = (BuildingInfo*) building->customData;
     for (int i = 0; i < entity_manager.entity_count; i++) {
-        if (entity_manager.entity_list[i]._inuse) {
+        if (entity_manager.entity_list[i]._inuse&&
+            (entity_manager.entity_list[i].info&EF_AIR&&info->flags&BF_AIR||
+                entity_manager.entity_list[i].info & EF_GROUND && info->flags & BF_GROUND)) {
             float d = vector3d_magnitude_between(entity_manager.entity_list[i].position, building->position);
             if (d <= info->range && d >= info->vulnerability) {
                 return &entity_manager.entity_list[i];
@@ -229,7 +231,7 @@ Entity* M_find_nearest(Entity* enemy) {
                 //if (info->flags&EF_MELEE&&
                 //  ((BuildingData*)entity_manager.building_list[i].customData)->info->flags&BF_WALL)
                 if (info->flags & EF_TARGET_DEFENSE && 
-                    ((BuildingData*)entity_manager.building_list[i].customData)->info->flags & ~BF_DEFENSE)
+                    ((BuildingInfo*)entity_manager.building_list[i].customData)->flags & ~BF_DEFENSE)
                     continue;
                 enemy->target = &entity_manager.building_list[i];
             }
@@ -239,6 +241,19 @@ Entity* M_find_nearest(Entity* enemy) {
         }
     }
     return enemy->target;
+}
+
+void sphere_damage(Sphere sphere, Uint16 baseDamage) {
+    Vector3D v3 = vector3d(sphere.x, sphere.y, sphere.z);
+    for (int i = 0; i < entity_manager.entity_count; i++) {
+        if (entity_manager.entity_list[i]._inuse&&vector3d_magnitude_between(entity_manager.entity_list[i].position, v3) <= sphere.r) {
+            entity_manager.entity_list[i].damage(&entity_manager.entity_list[i], baseDamage, NULL);
+        }
+    }
+}
+
+void S_effect(Entity* spell) {
+
 }
 
 /*eol@eof*/

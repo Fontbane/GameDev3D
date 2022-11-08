@@ -14,7 +14,7 @@ BuildingInfo b_cannon = {
     .flags=BF_DEFENSE|BF_GROUND
 };
 
-Entity* cannon_entify(BuildingData data) {
+/*Entity* cannon_entify(BuildingData data) {
     Entity* ent = NULL;
 
     ent = entity_new();
@@ -29,7 +29,7 @@ Entity* cannon_entify(BuildingData data) {
     ent->think = cannon_think;
     building_entify(ent, b_cannon);
     return ent;
-}
+}*/
 
 void cannon_think(Entity* self) {
 
