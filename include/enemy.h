@@ -10,7 +10,7 @@
 #define EF_FIRE				0x08
 #define EF_ICE				0x10
 #define EF_SPLASH			0x20
-#define EF_SPAWN_MINIS		0x40
+#define EF_ENEMY			0x40
 #define EF_TARGET_DEFENSE	0x80
 
 typedef enum Enemy {
@@ -46,17 +46,15 @@ int M_fire(Entity* attacker, Entity* target);
 
 int M_melee(Entity* attacker, Entity* target);
 
-void M_die(Entity* enemy, Entity* causeOfDeath);
+void M_die(Entity* enemy);
 
 void M_think(Entity* self);
 
 Entity* M_spawn(Vector3D position, char* name);
 
-Entity* M_spawn_from_id(Vector3D position, Enemy id);
-
 void M_damage(Entity* self, float damage, Entity* inflictor);
 
-void M_golem_die(Entity* self, Entity* causeOfDeath);
+void M_golem_die(Entity* self);
 
 void M_shambler_fire(Entity* attacker, Entity* target);
 

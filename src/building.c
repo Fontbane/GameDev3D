@@ -3,6 +3,8 @@
 
 #include "building.h"
 #include "save.h"
+#include "gfc_primitives.h"
+#include "gf3d_draw.h"
 
 void B_think(Entity* self) {
 	BuildingInfo* info = self->customData;
@@ -100,6 +102,7 @@ void B_init_statmap() {
 	B_init_buildinginfo(json, "lab", &lab);
 	B_init_buildinginfo(json, "hut", &hut);
 	B_init_buildinginfo(json, "hall", &hall);
+	sj_free(json);
 }
 
 void B_init_buildinginfo(SJson* json, char* buildingName, BuildingInfo* biptr) {
@@ -114,6 +117,7 @@ void B_init_buildinginfo(SJson* json, char* buildingName, BuildingInfo* biptr) {
 	sj_get_float_value(sj_object_get_value(building, "range"), &biptr->range);
 	sj_get_float_value(sj_object_get_value(building, "vulnerability"), &biptr->vulnerability);
 	gfc_hashmap_insert(B_statmap, buildingName, biptr);
+	sj_free(building);
 }
 
 
@@ -149,6 +153,7 @@ void B_apply_upgrade(Entity* building, Uint8 mode) {
 		building->health = newinfo->maxHealth;
 		building->model = gf3d_model_load(name);
 		slog("Upgraded to %s", name);
+		game.state = Day;
 	}
 
 }
@@ -168,7 +173,7 @@ Entity* B_try_buy(char* name) {
 		if (info->id == LEY || info->id == MINE) {
 			info->cost *= 8;
 		}
-		return B_spawn(vector3d(0, 0, 0), info);
+		B_choose_location(info);
 	}
 }
 
@@ -198,11 +203,24 @@ Entity* B_spawn(Vector3D position, BuildingInfo* info) {
 	b->bounds = bounds;
 	b->model = gf3d_model_load(info->name);
 	saveData->totalBuildings[info->id]++;
+	game.name = NULL;
 }
 
-void B_break(Entity* building, Entity* causeOfDeath) {
+void B_break(Entity* building) {
 	building->info &= ES_dead;
 	building->color.a = 0.5f;
 	BuildingInfo* info=(BuildingInfo*)building->customData;
+	if (info->id == MORTAR && info->mode == MORTAR_BLOWUP) {
+		B_mortar_explode(building);
+	}
+	else if (info->id == INFERNO_TOWER && info->mode == MELTDOWN_INFERNO) {
+		B_inferno_meltdown(building);
+	}
+	else if (info->id == HALL) {
+		B_break(building);
+	}
+}
+
+void B_try_rebuild(Entity* building) {
 
 }

@@ -1,34 +1,45 @@
 {
-    "ice_spell":{
+    "freeze_spell":{
+        "id":1,
         "effect_enemies":true,
         "duration":3000,
         "radius":3,
-        "cost":2500
+        "cost":2500,
+        "color":9035995
     },
     "heal_spell":{
+        "id":2,
         "effect_buildings":true,
         "duration":10000,
         "tickstofire":10,
         "radius":5,
-        "cost":1000
+        "cost":1000,
+        "color":16768781
     },
     "sludge_spell":{
+        "id":3,
         "effect_enemies":true,
         "duration":7500,
+        "tickstofire":50,
         "radius":5,
-        "cost":5000
+        "cost":5000,
+        "color":3344230
     },
     "smite_spell":{
+        "id":4,
         "effect_enemies":true,
         "duration":1,
         "radius":2,
-        "cost":8000
+        "cost":8000,
+        "color":6911
     },
-    "inferno_spell":{
+    "pyro_spell":{
+        "id":5,
         "effect_enemies":true,
         "duration":5000,
         "tickstofire":50,
         "radius":3,
-        "cost":10000
+        "cost":10000,
+        "color":14555399
     }
 }

@@ -106,9 +106,19 @@ void B_inferno_meltdown(Entity* self);
 
 void B_init_statmap();
 
+void B_try_rebuild(Entity* building);
+
+Entity* B_try_buy(char* name);
+
 void B_init_buildinginfo(SJson* json, char* buildingName, BuildingInfo* biptr);
 
-Entity* B_spawn(Vector3D position, char* name);
+Entity* B_spawn(Vector3D position, BuildingInfo* info);
+
+void B_explosion_think(Entity* self);
+
+void B_explosion_draw(Entity* self);
+
+extern Vector3D B_choose_location(BuildingInfo* info);
 
 extern Entity* B_find_nearest(Entity* building);
 

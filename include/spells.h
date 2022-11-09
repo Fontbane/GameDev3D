@@ -18,12 +18,15 @@ typedef struct {
 	float radius;
 	Uint16 tickstofire;
 	Uint16 duration;
+	Uint16 cost;
+	Color color;
 }SpellInfo;
 
 HashMap* S_statmap;
 
 void S_statmap_init();
 void S_init_spellinfo(SJson* json, char* name, SpellInfo* sptr);
+void S_try_buy(Vector3D position, char* name);
 void S_spawn(Vector3D position, char* name);
 void S_think(Entity* self);
 

@@ -4,28 +4,30 @@
 #include "save.h"
 
 void M_think(Entity* self) {
-	EnemyInfo* info = self->customData;
+	if (self->health == 0) {
+		self->onDeath(self);
+	}
+	if (self->info & STATUS_FROZEN && SDL_GetTicks() < self->ticksSinceStatus) {
+		return;
+	}
+	EnemyInfo* info = (EnemyInfo*)self->customData;
+	if (self->info & STATUS_BURNED && SDL_GetTicks() < self->ticksSinceStatus && (self->ticksSinceStatus- SDL_GetTicks())%256==0) {
+		self->damage(self, info->maxHealth / 30, NULL);
+	}
 	if (!self->target || self->target->state == ES_dead) {
 		self->target = M_find_nearest(self);
 	}
 	if (!self->target) {
 		slog("No target found");
-		M_die(self, NULL);
-	}
-	if (self->state == ES_attack) {
-		if (SDL_GetTicks() - self->fireTimer >= info->tickstofire) {
-			M_fire(self, self->target);
-		}
-		else {
-			self->state = ES_hunt;
-			self->target = NULL;
-		}
+		M_die(self);
 	}
 	if (info->range == 0 && gfc_box_overlap(self->bounds, self->target->bounds)) {
-		M_melee(self,self->target);
+		if (SDL_GetTicks() - self->fireTimer >= info->tickstofire)
+			M_melee(self, self->target);
 	}
 	else if (vector3d_distance_between_less_than(self->position, self->target->position, info->range)) {
-		M_fire(self, self->target);
+		if (SDL_GetTicks() - self->fireTimer >= info->tickstofire)
+			M_fire(self, self->target);
 	}
 	else {
 		float speedfactor = self->info & STATUS_SLUDGE ? 0.5 : 1.0;
@@ -33,7 +35,9 @@ void M_think(Entity* self) {
 	}
 }
 
-int M_fire(Entity* attacker, Entity* target);
+int M_fire(Entity* attacker, Entity* target) {
+	return 0;
+}
 
 int M_melee(Entity* attacker, Entity* target) {
 	EnemyInfo* info = (EnemyInfo*)attacker->customData;
@@ -45,10 +49,10 @@ int M_melee(Entity* attacker, Entity* target) {
 	return (int)info->damage * factor;
 }
 
-void M_die(Entity* enemy, Entity* causeOfDeath) {
+void M_die(Entity* enemy) {
 	EnemyInfo* info = (EnemyInfo*)enemy->customData;
 	if (info->id == GOLEM) {
-		M_golem_die(enemy, causeOfDeath);
+		M_golem_die(enemy);
 	}
 	else {
 		saveData->gold += info->weight * info->weight * 4;
@@ -86,9 +90,7 @@ Entity* M_spawn(Vector3D position, char* name){
 	};
 	m->bounds = bounds;
 	m->model = gf3d_model_load(name);
-}
-
-Entity* M_spawn_from_id(Vector3D position, Enemy id) {
+	m->onDeath = M_die;
 }
 
 void M_damage(Entity* self, float damage, Entity* inflictor) {
@@ -99,11 +101,11 @@ void M_damage(Entity* self, float damage, Entity* inflictor) {
 		self->health -= (int)damage;
 	}
 	if (self->health == 0) {
-		self->onDeath(self, inflictor);
+		self->onDeath(self);
 	}
 }
 
-void M_init_statmap() {
+void M_statmap_init() {
 	M_statmap = gfc_hashmap_new();
 	EnemyInfo archer = { 0 };
 	EnemyInfo buster = { 0 };
@@ -128,13 +130,18 @@ void M_init_enemyinfo(SJson* json, char* name, EnemyInfo* mptr) {
 	mptr->name = name;
 	sj_get_integer_value(sj_object_get_value(building, "id"), &mptr->id);
 	sj_get_integer_value(sj_object_get_value(building, "weight"), &mptr->weight);
-	sj_get_integer_value(sj_object_get_value(building, "cost"), &mptr->baseSpeed);
+	sj_get_integer_value(sj_object_get_value(building, "baseSpeed"), &mptr->baseSpeed);
 	sj_get_integer_value(sj_object_get_value(building, "tickstofire"), &mptr->tickstofire);
 	sj_get_integer_value(sj_object_get_value(building, "maxHealth"), &mptr->maxHealth);
 	sj_get_integer_value(sj_object_get_value(building, "damage"), &mptr->damage);
 	sj_get_float_value(sj_object_get_value(building, "range"), &mptr->range);
 	if (mptr->id == DRAGON || mptr->id == BAT) {
-		mptr->flags& EF_AIR;
+		mptr->flags&=EF_AIR;
 	}
+	else if (mptr->id == BUSTER) {
+		mptr->flags &= EF_TARGET_DEFENSE;
+	}
+	mptr->flags &= EF_ENEMY;
 	gfc_hashmap_insert(B_statmap, name, mptr);
+	sj_free(building);
 }

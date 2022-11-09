@@ -1,7 +1,8 @@
 #ifndef __GAMELOCAL_H__
 #define __GAMELOCAL_H__
 
-#include "gfc_input.h";
+#include "gfc_input.h"
+#include "gfc_primitives.h"
 #include <simple_json.h>
 #include <simple_logger.h>
 
@@ -10,7 +11,22 @@ typedef enum GameState {
 	Night,
 	Place,
 	Selecting,
-	Selected
-};
+	Selected,
+	Casting,
+	Over
+}GameState;
+
+typedef struct GameLocal {
+	GameState state;
+	Box selection;
+	char* name;
+	void* selected;
+	Vector3D location_chosen;
+	Uint8 labBroken : 1;
+	Uint8 hutBroken : 1;
+	Uint8 padding : 6;
+}GameLocal;
+
+GameLocal game;
 
 #endif // !__GAMELOCAL_H__

@@ -222,7 +222,7 @@ Vector3D vector3d_move_toward(Vector3D current, Vector3D target, float maxDelta)
 Entity* M_find_nearest(Entity* enemy) {
     EnemyInfo* info = enemy->customData;
     for (int i = 0; i < entity_manager.entity_count; i++) {
-        if (entity_manager.building_list[i]._inuse&& entity_manager.building_list[i].state!=ES_dead) {
+        if (entity_manager.building_list[i]._inuse && entity_manager.building_list[i].state!=ES_dead) {
             float d = vector3d_magnitude_between(entity_manager.building_list[i].position, enemy->position);
             if (!enemy->target) {
                 enemy->target = &entity_manager.building_list[i];
@@ -253,7 +253,73 @@ void sphere_damage(Sphere sphere, Uint16 baseDamage) {
 }
 
 void S_effect(Entity* spell) {
+    SpellInfo* info = (SpellInfo*)spell->customData;
+    if (info->targetEnemies == 0) {
+        for (int i = 0; i < entity_manager.entity_count; i++) {
+            if (entity_manager.building_list[i]._inuse && entity_manager.entity_list[i].state != ES_dead) {
+                BuildingInfo* info=(BuildingInfo*)entity_manager.entity_list[i].customData;
+                entity_manager.entity_list[i].health=min(entity_manager.entity_list[i].health+info->maxHealth/10,info->maxHealth);
+            }
+        }
+    }
+    for (int i = 0; i < entity_manager.entity_count; i++) {
+        if (entity_manager.entity_list[i]._inuse && entity_manager.entity_list[i].state != ES_notarget) {
+            switch (info->id) {
+            case FREEZE_SPELL:
+                entity_manager.entity_list[i].info &= STATUS_FROZEN;
+                break;
+            case SLUDGE_SPELL:
+                entity_manager.entity_list[i].info &= STATUS_SLUDGE;
+                break;
+            case SMITE_SPELL:
+                entity_manager.entity_list[i].health=0;
+                break;
+            case PYRO_SPELL:
+                entity_manager.entity_list[i].info &= STATUS_BURNED;
+                break;
+            }
+            entity_manager.entity_list[i].ticksSinceStatus = SDL_GetTicks() + info->duration;
+        }
+    }
+}
 
+Vector3D B_choose_location(BuildingInfo* info) {
+    game.state = Selecting;
+    Box b = {
+        .x = 0,
+        .y = 0,
+        .z = 0,
+        .w = info->size,
+        .h = 1,
+        .d = info->size
+    };
+
+    game.selection = b;
+    game.name=info->name;
+}
+
+Uint8 B_check_location(Box box) {
+    for (int i = 0; i < entity_manager.entity_count; i++) {
+        if (entity_manager.building_list[i]._inuse && gfc_box_overlap(entity_manager.building_list[i].bounds, box)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void B_at_location(Vector3D position) {
+    for (int i = 0; i < entity_manager.entity_count; i++) {
+        if (entity_manager.building_list[i]._inuse && gfc_point_in_box(position, entity_manager.building_list[i].bounds)) {
+            BuildingInfo* info = (BuildingInfo*)entity_manager.building_list[i].customData;
+            if (info->id == HUT) {
+                entity_manager.building_list[i].health = info->maxHealth;
+                entity_manager.building_list[i].state = ES_idle;
+                return;
+            }
+            game.state = Selected;
+            game.selected = entity_manager.building_list + i;
+        }
+    }
 }
 
 /*eol@eof*/

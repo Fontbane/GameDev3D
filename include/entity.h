@@ -7,6 +7,8 @@
 
 #include "gf3d_model.h"
 
+#include "gamelocal.h"
+
 #define STATUS_BURNED       0x01
 #define STATUS_FROZEN       0x02
 #define STATUS_SLUDGE       0x04
@@ -21,7 +23,8 @@ typedef enum
     ES_idle = 0,
     ES_hunt,
     ES_dead,
-    ES_attack
+    ES_attack,
+    ES_notarget
 }EntityState;
 
 typedef enum Element {
@@ -126,5 +129,9 @@ Entity* building_new();
 Vector3D vector3d_move_toward(Vector3D current, Vector3D target, float rate);
 
 void sphere_damage(Sphere sphere, Uint16 baseDamage);
+
+Uint8 B_check_location(Box box);
+
+Uint8 B_at_location(Vector3D position);
 
 #endif
