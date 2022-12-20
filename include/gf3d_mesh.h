@@ -2,9 +2,6 @@
 #define __GF3D_MESH_H__
 
 #include <vulkan/vulkan.h>
-#include <assimp/cimport.h>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 #include "gfc_vector.h"
 #include "gfc_text.h"
 #include "gfc_matrix.h"

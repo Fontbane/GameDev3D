@@ -28,13 +28,13 @@ typedef enum Enemy {
 
 typedef struct EnemyInfo {
 	Enemy id;
-	Uint8 weight;
+	int weight;
 	float baseSpeed;//units moved per tick
 	float damage;//per hit
-	Uint16 tickstofire;
+	int tickstofire;
 	float range;
-	Uint16 maxHealth;
-	Uint16 drops;
+	int maxHealth;
+	int drops;
 	char* name;
 	float size;
 	Uint8 flags;
@@ -49,6 +49,8 @@ int M_melee(Entity* attacker, Entity* target);
 void M_die(Entity* enemy);
 
 void M_think(Entity* self);
+
+void M_update(Entity* self);
 
 Entity* M_spawn(Vector3D position, char* name);
 

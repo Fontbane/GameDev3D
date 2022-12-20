@@ -298,7 +298,6 @@ void gf2d_sprite_render(Sprite *sprite,VkCommandBuffer commandBuffer, VkDescript
     vkCmdDrawIndexed(commandBuffer, 6, 1, 0, 0, 0);
 }
 
-
 void gf2d_sprite_draw(Sprite *sprite,Vector2D position,Vector2D scale,Vector3D rotation,Color color,Uint32 frame)
 {
     VkDescriptorSet *descriptorSet = NULL;

@@ -6,6 +6,7 @@
 typedef struct
 {
     Matrix4 cameraMat;      //final matrix to become the view matrix
+    Matrix4 cameraMatInv;   //final matrix to become the inverse view matrix
     Vector3D scale;
     Vector3D position;
     Vector3D rotation;      // pitch, roll, yaw
@@ -40,6 +41,10 @@ void gf3d_camera_look_at(
     Vector3D target,
     Vector3D up
 );
+
+Vector3D gf3d_camera_get_position();
+
+Vector3D gf3d_camera_get_angles();
 
 /**
  * @brief explicitely set the camera positon, holding all other parameters the same

@@ -12,11 +12,11 @@
 #define STATUS_BURNED       0x01
 #define STATUS_FROZEN       0x02
 #define STATUS_SLUDGE       0x04
-#define STATUS_BROKEN       0x08
+#define ENTTYPE_ENEMY_GRD   0x08
 #define ENTTYPE_BUILDING    0x10
 #define ENTTYPE_ENEMY       0x20
-#define ENTTYPE_POINT       0x40
-#define ENTTYPE_LINE        0x80
+#define ENTTYPE_ENEMY_AIR   0x40
+#define ENTTYPE_RESOURCE    0x80
 
 typedef enum
 {
@@ -128,10 +128,10 @@ Entity* building_new();
 
 Vector3D vector3d_move_toward(Vector3D current, Vector3D target, float rate);
 
-void sphere_damage(Sphere sphere, Uint16 baseDamage);
+void sphere_damage(Sphere sphere, float baseDamage);
 
 Uint8 B_check_location(Box box);
 
-Uint8 B_at_location(Vector3D position);
+void B_at_location(Vector3D position);
 
 #endif

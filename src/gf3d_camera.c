@@ -72,6 +72,18 @@ void gf3d_camera_update_view()
         
 }
 
+Vector3D gf3d_camera_get_position()
+{
+    Vector3D position;
+    vector3d_negate(position, gf3d_camera.position);
+    return position;
+}
+
+Vector3D gf3d_camera_get_angles()
+{
+    return vector3d(gf3d_camera.rotation.x, -gf3d_camera.rotation.y, -gf3d_camera.rotation.z - GFC_HALF_PI);
+}
+
 void gf3d_camera_set_position(Vector3D position)
 {
     gf3d_camera.position.x = -position.x;

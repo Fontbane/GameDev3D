@@ -62,6 +62,8 @@ void gf3d_vgraphics_rotate_camera(float degrees);
  * @return the view matrix sent to every rendering call
  */
 Matrix4 *gf3d_vgraphics_get_view_matrix();
+void gf3d_vgraphics_get_projection_matrix(Matrix4* proj);
+void gf3d_vgraphics_get_view(Matrix4* view);
 
 
 VkBuffer gf3d_vgraphics_get_uniform_buffer_by_index(Uint32 index);

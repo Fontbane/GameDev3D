@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "gfc_vector.h"
 #include "gfc_hashmap.h"
+#include "gfc_text.h"
 
 #define BF_DEFENSE	0x01
 #define BF_SPLASH	0x02
@@ -14,8 +15,8 @@
 #define BF_HALL		0x80
 
 #define NORMAL_CANNON	0
-#define GIANT_CANNON	1
-#define DOUBLE_CANNON	2
+#define DOUBLE_CANNON	1
+#define GIANT_CANNON	2
 
 #define NORMAL_ROCKET	0
 #define MULTI_ROCKET	1
@@ -39,12 +40,12 @@
 
 typedef enum Building {
 	BUILDING_NONE,
-	WALL,
 	HALL,
-	HUT,
-	LAB,
 	MINE,
 	LEY,
+	LAB,
+	HUT,
+	WALL,
 	CANNON,
 	ROCKETS,
 	MORTAR,
@@ -58,14 +59,14 @@ typedef struct BuildingInfo {
 	char* name;
 	float range;
 	float vulnerability;
-	Uint16 damage;//per hit
-	Uint16 tickstofire;
-	Uint16 maxHealth;
-	Uint16 cost;
+	int damage;//per hit
+	int tickstofire;
+	int maxHealth;
+	int cost;
+	int size;
+	int mode;
 	Uint8 targets;
 	Uint8 flags;
-	Uint8 size;
-	Uint8 mode;
 }BuildingInfo;
 
 typedef struct BuildingData {
@@ -80,11 +81,17 @@ typedef struct BuildingData {
 
 HashMap* B_statmap;
 
+BuildingInfo* B_stats;
+
 void B_think(Entity* self);
+
+void B_draw(Entity* self);
+
+void B_damage(Entity* self, float damage, Entity* inflictor);
 
 int B_fire(Entity* building, Entity* target);
 
-void B_break(Entity* building, Entity* causeOfDeath);
+void B_break(Entity* building);
 
 void B_apply_upgrade(Entity* building, Uint8 mode);
 
@@ -93,6 +100,8 @@ void B_level_up(Entity* building);
 void B_inferno_think(Entity* building);
 
 void B_inferno_fire(Entity* building);
+
+void B_inferno_draw(Entity* self);
 
 void B_rocket_fire(Vector3D position, Uint16 damage);
 
@@ -108,17 +117,35 @@ void B_init_statmap();
 
 void B_try_rebuild(Entity* building);
 
-Entity* B_try_buy(char* name);
+void B_try_buy(Building id);
 
-void B_init_buildinginfo(SJson* json, char* buildingName, BuildingInfo* biptr);
+void B_init_buildinginfos(SJson* json, Building id, Uint8 mode);
 
-Entity* B_spawn(Vector3D position, BuildingInfo* info);
+BuildingInfo* B_stats_get(Building id, Uint8 mode);
+
+Entity* B_spawn(Vector3D position, Building id);
 
 void B_explosion_think(Entity* self);
 
 void B_explosion_draw(Entity* self);
 
-extern Vector3D B_choose_location(BuildingInfo* info);
+void B_multi_think(Entity* self);
+
+void B_shell_think(Entity* self);
+
+void B_shell_draw(Entity* self);
+
+void B_fire_shell(Entity* self);
+
+void B_fire_bullet(Entity* self);
+
+void B_fire_fireball(Entity* self);
+
+void B_fire_iceball(Entity* self);
+
+void B_bullet_think(Entity* self);
+
+extern void B_choose_location(BuildingInfo* info);
 
 extern Entity* B_find_nearest(Entity* building);
 

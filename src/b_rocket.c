@@ -3,16 +3,11 @@
 
 void B_rocket_fire(Vector3D position, Uint16 damage) {
 	Entity* rocket = building_new();
-	Sphere sphere={
-		.x = position.x,
-		.y = position.y,
-		.z = position.z,
-		.r = 0.1f
-	};
+	Sphere sphere=gfc_sphere(position.x,position.y,position.z,0.1f);
 	rocket->think = B_rocket_think;
 	rocket->position = position;
 	rocket->draw = B_rocket_draw;
-	rocket->info = damage;
+	rocket->team = damage;
 
 	rocket->customData = &sphere;
 	rocket->fireTimer = SDL_GetTicks();
@@ -24,7 +19,7 @@ void B_rocket_think(Entity* self) {
 		sphere->r = (SDL_GetTicks() - self->fireTimer) / 512.0f;
 	}
 	if (sphere->r > 3) entity_free(self);
-	sphere_damage(*sphere, self->info);
+	sphere_damage(*sphere, self->team);
 }
 
 void B_rocket_draw(Entity* self) {

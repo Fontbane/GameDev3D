@@ -35,6 +35,7 @@ void entity_system_close()
 void entity_system_init(Uint32 maxEntities)
 {
     entity_manager.entity_list = gfc_allocate_array(sizeof(Entity),maxEntities);
+    entity_manager.building_list = gfc_allocate_array(sizeof(Entity), maxEntities);
     if (entity_manager.entity_list == NULL)
     {
         slog("failed to allocate entity list, cannot allocate ZERO entities");
@@ -58,6 +59,7 @@ Entity *entity_new()
             entity_manager.entity_list[i].scale.x = 1;
             entity_manager.entity_list[i].scale.y = 1;
             entity_manager.entity_list[i].scale.z = 1;
+            entity_manager.building_list[i].fireTimer = SDL_GetTicks();
             
             entity_manager.entity_list[i].color = gfc_color(1,1,1,1);
             entity_manager.entity_list[i].selectedColor = gfc_color(1,1,1,1);
@@ -87,7 +89,9 @@ Entity* building_new()
             entity_manager.building_list[i].color = gfc_color(1, 1, 1, 1);
             entity_manager.building_list[i].selectedColor = gfc_color(1, 1, 1, 1);
 
+            entity_manager.building_list[i].fireTimer = SDL_GetTicks();
             entity_manager.building_list[i].ticksSinceStatus = 0;
+            slog("New building at index %i", i);
             return &entity_manager.building_list[i];
         }
     }
@@ -108,13 +112,16 @@ void entity_draw(Entity *self)
 {
     if (!self)return;
     if (self->hidden)return;
-    gf3d_model_draw(self->model,self->modelMat,gfc_color_to_vector4f(self->color),vector4d(1,1,1,1));
-    if (self->selected)
-    {
-        gf3d_model_draw_highlight(
-            self->model,
-            self->modelMat,
-            gfc_color_to_vector4f(self->selectedColor));
+    if (self->draw)self->draw(self);
+    if (self->model) {
+        gf3d_model_draw(self->model, self->modelMat, gfc_color_to_vector4f(self->color), vector4d(1, 1, 1, 1));
+        if (self->selected)
+        {
+            gf3d_model_draw_highlight(
+                self->model,
+                self->modelMat,
+                gfc_color_to_vector4f(self->selectedColor));
+        }
     }
 }
 
@@ -123,16 +130,14 @@ void entity_draw_all()
     int i;
     for (i = 0; i < entity_manager.entity_count; i++)
     {
-        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        if (entity_manager.entity_list[i]._inuse)// not used yet
         {
-            continue;// skip this iteration of the loop
+            entity_draw(&entity_manager.entity_list[i]);
         }
-        entity_draw(&entity_manager.entity_list[i]);
-        if (!entity_manager.building_list[i]._inuse)// not used yet
+        if (entity_manager.building_list[i]._inuse)// not used yet
         {
-            continue;// skip this iteration of the loop
+            entity_draw(&entity_manager.building_list[i]);
         }
-        entity_draw(&entity_manager.building_list[i]);
     }
 }
 
@@ -147,16 +152,14 @@ void entity_think_all()
     int i;
     for (i = 0; i < entity_manager.entity_count; i++)
     {
-        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        if (entity_manager.entity_list[i]._inuse)// not used yet
         {
-            continue;// skip this iteration of the loop
+            entity_think(&entity_manager.entity_list[i]);
         }
-        entity_think(&entity_manager.entity_list[i]);
-        if (!entity_manager.building_list[i]._inuse)// not used yet
+        if (entity_manager.building_list[i]._inuse)// not used yet
         {
-            continue;// skip this iteration of the loop
+            entity_think(&entity_manager.building_list[i]);
         }
-        entity_think(&entity_manager.building_list[i]);
     }
 }
 
@@ -183,23 +186,27 @@ void entity_update_all()
     int i;
     for (i = 0; i < entity_manager.entity_count; i++)
     {
-        if (!entity_manager.entity_list[i]._inuse)// not used yet
+        if (entity_manager.entity_list[i]._inuse)// not used yet
         {
-            continue;// skip this iteration of the loop
+            entity_update(&entity_manager.entity_list[i]);
         }
-        entity_update(&entity_manager.entity_list[i]);
-        entity_update(&entity_manager.building_list[i]);
+        if (entity_manager.building_list[i]._inuse)// not used yet
+        {
+            entity_update(&entity_manager.building_list[i]);
+        }
     }
 }
 
 Entity* B_find_nearest(Entity* building) {
     BuildingInfo* info = (BuildingInfo*) building->customData;
+    //slog("%s looking for nearby enemies", info->name);
     for (int i = 0; i < entity_manager.entity_count; i++) {
-        if (entity_manager.entity_list[i]._inuse&&
-            (entity_manager.entity_list[i].info&EF_AIR&&info->flags&BF_AIR||
-                entity_manager.entity_list[i].info & EF_GROUND && info->flags & BF_GROUND)) {
+        if (entity_manager.entity_list[i]._inuse&& entity_manager.entity_list[i].state!=ES_notarget/* &&
+            (entity_manager.entity_list[i].info&ENTTYPE_ENEMY_AIR&&info->flags&BF_AIR||
+                entity_manager.entity_list[i].info & ENTTYPE_ENEMY_GRD && info->flags & BF_GROUND)*/) {
             float d = vector3d_magnitude_between(entity_manager.entity_list[i].position, building->position);
-            if (d <= info->range && d >= info->vulnerability) {
+            if (/*d <= info->range &&*/ d >= info->vulnerability) {
+                slog("%s found an enemy!", info->name);
                 return &entity_manager.entity_list[i];
             }
         }
@@ -210,40 +217,31 @@ Entity* B_find_nearest(Entity* building) {
 Vector3D vector3d_move_toward(Vector3D current, Vector3D target, float maxDelta) {
     Vector3D mov;
     vector3d_sub(mov, target, current);
-    float mag = vector3d_magnitude(mov);
-    if (mag <= maxDelta || mag == 0) {
-        return target;
-    }
-    vector3d_scale(mov, mov, maxDelta / mag);
-    vector3d_add(mov, current, mov);
+    vector3d_normalize(&mov);
+    vector3d_scale(mov, mov, maxDelta);
     return mov;
 }
 
 Entity* M_find_nearest(Entity* enemy) {
-    EnemyInfo* info = enemy->customData;
+    EnemyInfo* info = (EnemyInfo*)enemy->customData;
     for (int i = 0; i < entity_manager.entity_count; i++) {
         if (entity_manager.building_list[i]._inuse && entity_manager.building_list[i].state!=ES_dead) {
             float d = vector3d_magnitude_between(entity_manager.building_list[i].position, enemy->position);
-            if (!enemy->target) {
-                enemy->target = &entity_manager.building_list[i];
-            }
-            else if (vector3d_magnitude_between(enemy->target->position, enemy->position) <= d) {
+            if (info->range==0||d <= info->range) {
                 //if (info->flags&EF_MELEE&&
                 //  ((BuildingData*)entity_manager.building_list[i].customData)->info->flags&BF_WALL)
-                if (info->flags & EF_TARGET_DEFENSE && 
-                    ((BuildingInfo*)entity_manager.building_list[i].customData)->flags & ~BF_DEFENSE)
+                if (info->flags & EF_TARGET_DEFENSE &&
+                    entity_manager.building_list[i].info & ENTTYPE_RESOURCE) {
                     continue;
+                }
                 enemy->target = &entity_manager.building_list[i];
-            }
-            if (d <= info->range) {
-                return &entity_manager.building_list[i];
             }
         }
     }
     return enemy->target;
 }
 
-void sphere_damage(Sphere sphere, Uint16 baseDamage) {
+void sphere_damage(Sphere sphere, float baseDamage) {
     Vector3D v3 = vector3d(sphere.x, sphere.y, sphere.z);
     for (int i = 0; i < entity_manager.entity_count; i++) {
         if (entity_manager.entity_list[i]._inuse&&vector3d_magnitude_between(entity_manager.entity_list[i].position, v3) <= sphere.r) {
@@ -261,21 +259,22 @@ void S_effect(Entity* spell) {
                 entity_manager.entity_list[i].health=min(entity_manager.entity_list[i].health+info->maxHealth/10,info->maxHealth);
             }
         }
+        return;
     }
     for (int i = 0; i < entity_manager.entity_count; i++) {
         if (entity_manager.entity_list[i]._inuse && entity_manager.entity_list[i].state != ES_notarget) {
             switch (info->id) {
             case FREEZE_SPELL:
-                entity_manager.entity_list[i].info &= STATUS_FROZEN;
+                entity_manager.entity_list[i].info |= STATUS_FROZEN;
                 break;
             case SLUDGE_SPELL:
-                entity_manager.entity_list[i].info &= STATUS_SLUDGE;
+                entity_manager.entity_list[i].info |= STATUS_SLUDGE;
                 break;
             case SMITE_SPELL:
                 entity_manager.entity_list[i].health=0;
                 break;
             case PYRO_SPELL:
-                entity_manager.entity_list[i].info &= STATUS_BURNED;
+                entity_manager.entity_list[i].info |= STATUS_BURNED;
                 break;
             }
             entity_manager.entity_list[i].ticksSinceStatus = SDL_GetTicks() + info->duration;
@@ -283,19 +282,11 @@ void S_effect(Entity* spell) {
     }
 }
 
-Vector3D B_choose_location(BuildingInfo* info) {
+void B_choose_location(BuildingInfo* info) {
     game.state = Selecting;
-    Box b = {
-        .x = 0,
-        .y = 0,
-        .z = 0,
-        .w = info->size,
-        .h = 1,
-        .d = info->size
-    };
 
-    game.selection = b;
-    game.name=info->name;
+    game.selection = gfc_box(0,0,0,info->size/128.0f,1/128.0f,info->size/128.0f);
+    game.name=info->id;
 }
 
 Uint8 B_check_location(Box box) {
@@ -318,8 +309,11 @@ void B_at_location(Vector3D position) {
             }
             game.state = Selected;
             game.selected = entity_manager.building_list + i;
+            slog("Selected %s", info->name);
+            return;
         }
     }
+    game.state = Day;
 }
 
 /*eol@eof*/

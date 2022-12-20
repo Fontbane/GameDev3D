@@ -114,7 +114,7 @@ void gf3d_vgraphics_init(const char *config)
     json = sj_load(config);
     if (!json)
     {
-        slog("graphics config file load failed, exiting");
+        slog("graphics config file %s load failed, exiting", config);
         exit(0);
         return;
     }
@@ -358,6 +358,18 @@ void gf3d_vgraphics_setup(
         exit(0);
     }
     slog_sync();
+}
+
+void gf3d_vgraphics_get_projection_matrix(Matrix4* proj)
+{
+    if (!proj)return;
+    memcpy(proj, gf3d_vgraphics.ubo.proj, sizeof(Matrix4));
+}
+
+void gf3d_vgraphics_get_view(Matrix4* view)
+{
+    if (!view)return;
+    memcpy(view, gf3d_vgraphics.ubo.view, sizeof(Matrix4));
 }
 
 void gf3d_vgraphics_close()

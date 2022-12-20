@@ -13,8 +13,8 @@
     {
         "id":2,
         "weight":5,
-        "baseSpeed":12,
-        "damage":60,
+        "baseSpeed":4,
+        "damage":100,
         "tickstofire":2400,
         "range":0,
         "maxHealth":300

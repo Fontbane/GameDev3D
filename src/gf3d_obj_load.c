@@ -92,6 +92,7 @@ ObjData *gf3d_obj_load_from_file(const char *filename)
     if (!obj)return NULL;
     
     gf3d_obj_get_counts_from_file(obj, file);
+    slog("%s has %i verts %i normals %i texels %i faces",filename,obj->vertex_count,obj->normal_count,obj->texel_count,obj->face_count);
     
     obj->vertices = (Vector3D *)gfc_allocate_array(sizeof(Vector3D),obj->vertex_count);
     obj->normals = (Vector3D *)gfc_allocate_array(sizeof(Vector3D),obj->normal_count);

@@ -19,12 +19,14 @@ typedef enum GameState {
 typedef struct GameLocal {
 	GameState state;
 	Box selection;
-	char* name;
+	Uint16 name;
 	void* selected;
 	Vector3D location_chosen;
 	Uint8 labBroken : 1;
 	Uint8 hutBroken : 1;
 	Uint8 padding : 6;
+	Uint32 time;
+	Uint16 weight;
 }GameLocal;
 
 GameLocal game;

@@ -204,6 +204,12 @@
     <ClInclude Include="..\gfc\include\gfc_primitives.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\gf2d_mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\gf2d_actor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c">
@@ -399,6 +405,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\gfc\src\gfc_primitives.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\gf2d_actor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\gf2d_mouse.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\projectile.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

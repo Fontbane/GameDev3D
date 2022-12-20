@@ -16,9 +16,9 @@ typedef struct {
 	char* name;
 	Uint8 targetEnemies;
 	float radius;
-	Uint16 tickstofire;
-	Uint16 duration;
-	Uint16 cost;
+	int tickstofire;
+	int duration;
+	int cost;
 	Color color;
 }SpellInfo;
 
@@ -29,6 +29,7 @@ void S_init_spellinfo(SJson* json, char* name, SpellInfo* sptr);
 void S_try_buy(Vector3D position, char* name);
 void S_spawn(Vector3D position, char* name);
 void S_think(Entity* self);
+void S_draw(Entity* self);
 
 extern void S_effect(Entity* spell);
 
