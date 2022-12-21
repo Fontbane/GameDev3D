@@ -5,9 +5,9 @@
 
 #define PF_IGNORE_BUILDINGS		0x01
 #define PF_IGNORE_ENEMIES		0x02
-#define PF_HEAL_BY_DAMAGE		0x04
+#define PF_ICE					0x04
 #define	PF_GROW_BLAST			0x08
-#define PF_BOUNCE				0x10
+#define PF_ZAP					0x10
 #define PF_HOMING				0x20
 #define PF_SPLASH				0x40
 #define PF_FIRE					0x80

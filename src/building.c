@@ -94,9 +94,22 @@ int B_fire(Entity* building, Entity* target) {
 			flags |= PF_HOMING;
 		}
 	}
-	else if (info->id == WIZARD_TOWER) {
+	else if (info->id == WIZARD_TOWER&&info->mode==NORMAL_WIZARD_TOWER) {
 		flags |= PF_SPLASH;
+		flags |= PF_ZAP;
+		color.r = 0.25f;
+		color.g = 0.75f;
+	}
+	else if (info->id == WIZARD_TOWER && info->mode == DARK_TOWER) {
+		flags |= PF_SPLASH;
+		flags |= PF_FIRE;
 		color.r = 1;
+		color.g = 0.25f;
+	}
+	else if (info->id == WIZARD_TOWER && info->mode == IVORY_TOWER) {
+		flags |= PF_SPLASH;
+		flags |= PF_ICE;
+		color.b = 1;
 		color.g = 0.25f;
 	}
 	if (info->id == MORTAR || info->id == CANNON && info->mode == GIANT_CANNON) {

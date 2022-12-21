@@ -1,6 +1,7 @@
 #include "building.h"
 #include "gf3d_draw.h"
 #include "spells.h"
+#include "enemy.h"
 
 void B_inferno_think(Entity* self) {
 	if (!self->target || self->target->state == ES_dead) {
@@ -18,7 +19,7 @@ void B_inferno_fire(Entity* building) {
 	if (info->mode == HEATSOAK_INFERNO) {
 		firefactor += building->health / info->maxHealth;
 	}
-	building->target->damage(building->target, info->damage*firefactor, building);
+	building->target->damage(building->target, info->damage*firefactor, 1);
 }
 
 void B_inferno_draw(Entity* self) {

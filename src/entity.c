@@ -241,11 +241,11 @@ Entity* M_find_nearest(Entity* enemy) {
     return enemy->target;
 }
 
-void sphere_damage(Sphere sphere, float baseDamage) {
+void sphere_damage(Sphere sphere, float baseDamage, Uint32 element) {
     Vector3D v3 = vector3d(sphere.x, sphere.y, sphere.z);
     for (int i = 0; i < entity_manager.entity_count; i++) {
         if (entity_manager.entity_list[i]._inuse&&vector3d_magnitude_between(entity_manager.entity_list[i].position, v3) <= sphere.r) {
-            entity_manager.entity_list[i].damage(&entity_manager.entity_list[i], baseDamage, NULL);
+            entity_manager.entity_list[i].damage(&entity_manager.entity_list[i], baseDamage, element);
         }
     }
 }

@@ -128,7 +128,7 @@ Entity* building_new();
 
 Vector3D vector3d_move_toward(Vector3D current, Vector3D target, float rate);
 
-void sphere_damage(Sphere sphere, float baseDamage);
+void sphere_damage(Sphere sphere, float baseDamage, Uint32 element);
 
 Uint8 B_check_location(Box box);
 

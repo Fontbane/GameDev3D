@@ -87,7 +87,7 @@ int main(int argc,char *argv[])
     sky = gf3d_model_load("models/sky.model");
     gfc_matrix_identity(skyMat);
     gfc_matrix_scale(skyMat,vector3d(100,100,100));
-    game.state = Day;
+    game.state = MainMenu;
     game.hutBroken = 0;
     game.labBroken = 0;
     saveData = (PlayerData*)malloc(sizeof(PlayerData));
@@ -96,9 +96,6 @@ int main(int argc,char *argv[])
     saveData->elixir = 0;
     saveData->enemiesKilled = 0;
     
-    B_spawn(vector3d(0, 0, 0), HALL);
-    B_spawn(vector3d(-4, 0, 0), HUT);
-    B_spawn(vector3d(4, 0, 0), LAB);
     //gf3d_camera_look_at(vector3d(0, -50, 0), vector3d(0, 0, 0), vector3d(0, 0, 1));
     game.time = SDL_GetTicks();
 
@@ -150,7 +147,20 @@ int main(int argc,char *argv[])
                 gf2d_draw_rect_filled(gfc_rect(10, 10, 1080, 32), gfc_color8(128, 128, 128, 255));
                 
                 gf2d_draw_rect(gfc_rect(10 ,10,1080,32),gfc_color8(255,255,255,255));
-                if (game.state == Selecting) {
+
+                if (game.state == MainMenu) {
+                    gf2d_font_draw_line_tag("Crash of Crams", FT_H1, gfc_color(1, 1, 1, 1), vector2d(10, 10));
+                    gf2d_font_draw_line_tag("Press ENTER to start", FT_H2, gfc_color(1, 1, 1, 1), vector2d(10, 200));
+                    if (gfc_input_command_down("click")) {
+                        slog("Starting game");
+                        game.state = Day;
+                        saveData->day = 0;
+                        B_spawn(vector3d(0, 0, 0), HALL);
+                        B_spawn(vector3d(-4, 0, 0), HUT);
+                        B_spawn(vector3d(4, 0, 0), LAB);
+                    }
+                }
+                else if (game.state == Selecting) {
                     gf2d_font_draw_line_tag("Press ENTER to select where to place the building", FT_H1, gfc_color(1, 1, 1, 1), vector2d(10, 10));
                     char gold[32];
                     _snprintf(gold, 32, "Gold %i Elixir %i", saveData->gold, saveData->elixir);

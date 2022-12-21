@@ -44,7 +44,12 @@ void P_think(Entity* self) {
 	}
 	else if (self->state == ES_attack) {
 		if (info->flags & PF_SPLASH) {
-			sphere_damage(gfc_sphere(self->position.x,self->position.y,self->position.z,self->scale.x),info->damage);
+			if (info->flags & PF_FIRE)
+				sphere_damage(gfc_sphere(self->position.x, self->position.y, self->position.z, self->scale.x), info->damage, 1);
+			else if (info->flags & PF_ICE)
+				sphere_damage(gfc_sphere(self->position.x, self->position.y, self->position.z, self->scale.x), info->damage, 2);
+			else if (info->flags & PF_ZAP)
+				sphere_damage(gfc_sphere(self->position.x, self->position.y, self->position.z, self->scale.x), info->damage, 3);
 			if (info->flags & PF_GROW_BLAST) {
 				float r = (SDL_GetTicks() - self->fireTimer) / 512.0f;
 				self->scale = vector3d(r, r, r);

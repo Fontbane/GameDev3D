@@ -7,12 +7,14 @@
 #include <simple_logger.h>
 
 typedef enum GameState {
+	MainMenu,
 	Day,
 	Night,
 	Place,
 	Selecting,
 	Selected,
 	Casting,
+	BuyMenu,
 	Over
 }GameState;
 

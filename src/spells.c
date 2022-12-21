@@ -69,10 +69,10 @@ void S_spawn(Vector3D position, char* name) {
 }
 void S_think(Entity* self) {
 	SpellInfo* info = (SpellInfo*)self->customData;
-	if (SDL_GetTicks() - self->fireTimer > info->duration) {
-		entity_free(self);
-	}
-	else if ((info->id == HEAL_SPELL || info->id == SLUDGE_SPELL || info->id == PYRO_SPELL) 
+	//if (SDL_GetTicks() - self->fireTimer > info->duration) {
+	//	entity_free(self);
+	//}
+	if ((info->id == HEAL_SPELL || info->id == SLUDGE_SPELL || info->id == PYRO_SPELL) 
 		&& (SDL_GetTicks()-self->fireTimer)%info->tickstofire<info->duration) {
 		S_effect(self);
 	}
