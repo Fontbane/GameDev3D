@@ -19,7 +19,7 @@ void B_explosion_think(Entity* self) {
 		sphere->r = (SDL_GetTicks() - self->fireTimer) / 512.0f;
 	}
 	if (sphere->r > 9) entity_free(self);
-	sphere_damage(*sphere, 1200, 0);
+	sphere_damage(*sphere, 1200, self);
 }
 
 void B_explosion_draw(Entity* self) {

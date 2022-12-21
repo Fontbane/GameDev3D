@@ -19,7 +19,7 @@ void B_rocket_think(Entity* self) {
 		sphere->r = (SDL_GetTicks() - self->fireTimer) / 512.0f;
 	}
 	if (sphere->r > 3) entity_free(self);
-	sphere_damage(*sphere, self->team, 0);
+	sphere_damage(*sphere, self->team, self);
 }
 
 void B_rocket_draw(Entity* self) {

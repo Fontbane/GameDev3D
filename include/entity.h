@@ -128,10 +128,12 @@ Entity* building_new();
 
 Vector3D vector3d_move_toward(Vector3D current, Vector3D target, float rate);
 
-void sphere_damage(Sphere sphere, float baseDamage, Uint32 element);
+void sphere_damage(Sphere sphere, float baseDamage, Entity* inflictor);
 
 Uint8 B_check_location(Box box);
 
 void B_at_location(Vector3D position);
+
+void B_try_buy_upgrade(Vector2D position);
 
 #endif

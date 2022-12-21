@@ -199,57 +199,7 @@ void B_init_statmap() {
 		i++;
 		sj_free(building);
 	}
-
-	/*B_init_buildinginfo(json, "cannon", cannon);
-	B_init_buildinginfo(json, "doublecannon", doublecannon);
-	B_init_buildinginfo(json, "giantcannon", giantcannon);
-
-	B_init_buildinginfo(json, "mortar", mortar);
-	B_init_buildinginfo(json, "multimortar", multimortar);
-	B_init_buildinginfo(json, "blowupmortar", blowupmortar);
-
-	B_init_buildinginfo(json, "wiztower", wiztower);
-	B_init_buildinginfo(json, "ivorytower", ivorytower);
-	B_init_buildinginfo(json, "darktower", darktower);
-
-	B_init_buildinginfo(json, "rocket", rocket);
-	B_init_buildinginfo(json, "multirocket", multirocket);
-	B_init_buildinginfo(json, "homingrocket", homingrocket);
-
-	B_init_buildinginfo(json, "inferno", inferno);
-	B_init_buildinginfo(json, "meltdowninferno", meltdowninferno);
-	B_init_buildinginfo(json, "heatsoakinferno", heatsoakinferno);
-
-	B_init_buildinginfo(json, "mine", mine);
-	B_init_buildinginfo(json, "ley", ley);
-	B_init_buildinginfo(json, "lab", lab);
-	B_init_buildinginfo(json, "hut", hut);
-	B_init_buildinginfo(json, "hall", hall);
-
-	gfc_hashmap_slog(B_statmap);
-
-	slog("Cannon health is %i", cannon->maxHealth);
-	slog("Gold mine health is %i", mine->maxHealth);*/
 }
-
-/*void B_init_buildinginfo(SJson* json, char* buildingName, BuildingInfo* biptr) {
-	SJson* building = sj_object_get_value(json, buildingName);
-	biptr->name = buildingName;
-	slog("Initializing %s", buildingName);
-	slog("id %i mode %i cost %i tickstofire %i maxHealth %i damage %i range %i vulnerability %i",
-		sj_get_integer_value(sj_object_get_value(building, "id"), &biptr->id),
-		sj_get_integer_value(sj_object_get_value(building, "mode"), &biptr->mode),
-		sj_get_integer_value(sj_object_get_value(building, "cost"), &biptr->cost),
-		sj_get_integer_value(sj_object_get_value(building, "tickstofire"), &biptr->tickstofire),
-		sj_get_integer_value(sj_object_get_value(building, "maxHealth"), &biptr->maxHealth),
-		sj_get_integer_value(sj_object_get_value(building, "damage"), &biptr->damage),
-		sj_get_float_value(sj_object_get_value(building, "range"), &biptr->range),
-		sj_get_float_value(sj_object_get_value(building, "vulnerability"), &biptr->vulnerability));
-	slog("MaxHealth %i", biptr->maxHealth);
-	gfc_hashmap_insert(B_statmap, buildingName, biptr);
-
-	sj_object_free(building);
-}*/
 
 BuildingInfo* B_stats_get(Building id, Uint8 mode) {
 	return &B_stats[3 * id + mode];
@@ -285,6 +235,7 @@ void B_apply_upgrade(Entity* building, Uint8 mode) {
 	BuildingInfo* newinfo = B_stats_get(info->id,mode);
 	if (newinfo->cost > saveData->gold) {
 		slog("Come back when you're a little, mmm, richer, okay?");
+		game.state = Day;
 		return;
 	}
 	else {

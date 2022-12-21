@@ -137,15 +137,6 @@ Entity* M_spawn(Vector3D position, char* name){
 
 void M_damage(Entity* self, float damage, Entity* inflictor) {
 	EnemyInfo* m = (EnemyInfo*)self->customData;
-	if ((Uint32)inflictor==3&&m->id==GOLEM||m->id==GOLEMITE) {//Ground types take less lightning dmg
-		damage/=2;
-	}
-	else if ((Uint32)inflictor == 2 && m->id == DRAGON) {//Fire types take less ice dmg
-		damage/=2;
-	}
-	else if ((Uint32)inflictor == 1 && m->id == ARCHER) {//Ice types take more fire dmg
-		damage *= 2;
-	}
 	if (self->health <= damage) {
 		self->health = 0;
 		self->onDeath(self);

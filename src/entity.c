@@ -241,11 +241,11 @@ Entity* M_find_nearest(Entity* enemy) {
     return enemy->target;
 }
 
-void sphere_damage(Sphere sphere, float baseDamage, Uint32 element) {
+void sphere_damage(Sphere sphere, float baseDamage, Entity* inflictor) {
     Vector3D v3 = vector3d(sphere.x, sphere.y, sphere.z);
     for (int i = 0; i < entity_manager.entity_count; i++) {
         if (entity_manager.entity_list[i]._inuse&&vector3d_magnitude_between(entity_manager.entity_list[i].position, v3) <= sphere.r) {
-            entity_manager.entity_list[i].damage(&entity_manager.entity_list[i], baseDamage, element);
+            entity_manager.entity_list[i].damage(&entity_manager.entity_list[i], baseDamage, inflictor);
         }
     }
 }
@@ -271,7 +271,7 @@ void S_effect(Entity* spell) {
                 entity_manager.entity_list[i].info |= STATUS_SLUDGE;
                 break;
             case SMITE_SPELL:
-                entity_manager.entity_list[i].health=0;
+                entity_free(&entity_manager.entity_list[i]);
                 break;
             case PYRO_SPELL:
                 entity_manager.entity_list[i].info |= STATUS_BURNED;
@@ -314,6 +314,82 @@ void B_at_location(Vector3D position) {
         }
     }
     game.state = Day;
+}
+
+Vector2D buyMenuBounds[10][2] = {
+    {{1,61},{119,179}},//DOUBLE CANNON
+    {{121,61},{239,179}},//GIANT CANNON
+    {{181,241},{199,359}},//MULTI MORTAR
+    {{201,241},{319,359}},//BLOWUP MORTAR
+    {{301,61},{419,179}},//MULTI ROCKET
+    {{421,61},{539,179}},//HOMING ROCKET
+    {{1,421},{119,599}},//IVORY TOWER
+    {{121,421},{239,599}},//DARK TOWER
+    {{301,421},{419,599}},//HEATSOAK INFERNO
+    {{421,421},{539,599}}//MELTDOWN INFERNO
+};
+
+void B_try_buy_upgrade(Vector2D position) {
+    int i;
+    Building id=0;
+    int mode=0;
+    if (position.y > 61 && position.y < 179) {
+        if (position.x > 1 && position.x < 119) {
+            id = CANNON;
+            mode = DOUBLE_CANNON;
+        }
+        else if (position.x > 121 && position.x < 239) {
+            id = CANNON;
+            mode = GIANT_CANNON;
+        }
+        else if (position.x > 301 && position.x < 419) {
+            id = ROCKETS;
+            mode = MULTI_ROCKET;
+        }
+        else if (position.x > 421 && position.x < 539) {
+            id = ROCKETS;
+            mode = HOMING_ROCKET;
+        }
+    }
+    else if (position.y > 241 && position.y > 359) {
+        if (position.x > 181 && position.x < 299) {
+            id = MORTAR;
+            mode = MULTI_MORTAR;
+        }
+        else if (position.x > 301 && position.x < 419) {
+            id = MORTAR;
+            mode = MORTAR_BLOWUP;
+        }
+    }
+    else if (position.y>421 && position.y>599) {
+        if (position.x > 1 && position.x < 119) {
+            id = WIZARD_TOWER;
+            mode = IVORY_TOWER;
+        }
+        else if (position.x > 121 && position.x < 239) {
+            id = WIZARD_TOWER;
+            mode = DARK_TOWER;
+        }
+        else if (position.x > 301 && position.x < 419) {
+            id = INFERNO_TOWER;
+            mode = HEATSOAK_INFERNO;
+        }
+        else if (position.x > 421 && position.x < 539) {
+            id = INFERNO_TOWER;
+            mode = MELTDOWN_INFERNO;
+        }
+    }
+    if (id == 0 || mode == 0) {
+        return;
+    }
+    for (i = 0; i < entity_manager.entity_count; i++) {
+        if (entity_manager.building_list[i]._inuse) {
+            BuildingInfo* binfo=(BuildingInfo*)entity_manager.building_list[i].customData;
+            if (binfo->id == id) {
+                B_apply_upgrade(&entity_manager.building_list[i], mode);
+            }
+        }
+    }
 }
 
 /*eol@eof*/

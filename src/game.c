@@ -102,6 +102,7 @@ int main(int argc,char *argv[])
     Sound* bgm_day = gfc_sound_load("audio/day.wav", 1, 1);
     Sound* bgm_night = gfc_sound_load("audio/night.wav", 1, 1);
     gfc_sound_play(bgm_day, 2, 1, 1, -1);
+    Sprite* buymenu = gf2d_sprite_load_image("images/ui/buymenu.png");
     // main game loop
     slog("gf3d main loop begin");
     while(!done)
@@ -160,6 +161,12 @@ int main(int argc,char *argv[])
                         B_spawn(vector3d(4, 0, 0), LAB);
                     }
                 }
+                else if (game.state == BuyMenu) {
+                    gf2d_sprite_draw(buymenu, vector2d(0, 0), vector2d(1, 1), vector3d(0, 0, 0), gfc_color(1, 1, 1, 1), 0);
+                    if (gfc_input_command_down("click")) {
+                        B_try_buy_upgrade(gf2d_mouse_get_position());
+                    }
+                }
                 else if (game.state == Selecting) {
                     gf2d_font_draw_line_tag("Press ENTER to select where to place the building", FT_H1, gfc_color(1, 1, 1, 1), vector2d(10, 10));
                     char gold[32];
@@ -206,6 +213,9 @@ int main(int argc,char *argv[])
                     }
                     else if (gfc_input_command_down("ley")) {
                         B_try_buy(LEY);
+                    }
+                    else if (gfc_input_command_down("buy")) {
+                        game.state = BuyMenu;
                     }
                 }
                 else if (game.state == Night) {
